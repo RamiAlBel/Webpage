@@ -1,1 +1,111 @@
-Hello World
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Personal homepage" />
+    <title>Rami AlBel</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href="#top" aria-label="Home">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Rami AlBel</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#projects">Projects</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top" class="main">
+      <section class="hero">
+        <div class="wrap">
+          <p class="kicker">Hi, I’m</p>
+          <h1 class="title">Rami AlBel</h1>
+          <p class="subtitle">
+            I build software and explore ideas. This is a simple GitHub Pages site—fast,
+            accessible, and easy to update.
+          </p>
+          <div class="cta">
+            <a class="btn primary" href="#projects">See projects</a>
+            <a class="btn" href="#contact">Get in touch</a>
+          </div>
+          <div class="meta">
+            <a class="pill" href="https://github.com/RamiAlBel" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <button class="pill" id="copyLink" type="button">Copy link</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="wrap">
+          <h2 class="h2">Projects</h2>
+          <div class="grid">
+            <article class="card">
+              <h3 class="h3">Webpage</h3>
+              <p class="p">This site. Keep it as pure HTML/CSS/JS or evolve it later.</p>
+              <div class="cardActions">
+                <a class="link" href="https://github.com/RamiAlBel/Webpage" target="_blank" rel="noreferrer">
+                  Repo
+                </a>
+              </div>
+            </article>
+            <article class="card">
+              <h3 class="h3">Add your project</h3>
+              <p class="p">Duplicate this card and link to another repository.</p>
+              <div class="cardActions">
+                <a class="link" href="#contact">Contact</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="wrap">
+          <h2 class="h2">About</h2>
+          <div class="twoCol">
+            <p class="p">
+              Write a short bio here: what you’re studying/working on, your interests, and what
+              kinds of problems you like solving.
+            </p>
+            <ul class="list">
+              <li>Focus: web, systems, or data</li>
+              <li>Tools: add your stack</li>
+              <li>Currently: add what you’re learning</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="wrap">
+          <h2 class="h2">Contact</h2>
+          <div class="contact">
+            <a class="btn primary" href="mailto:you@example.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+          </div>
+          <p class="fineprint">
+            Tip: replace the email + LinkedIn link in <code>index.html</code>.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <span>© <span id="year"></span> Rami AlBel</span>
+        <a class="link" href="#top">Back to top</a>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
