@@ -188,6 +188,18 @@ code {
   margin-bottom: 14px;
 }
 
+.aboutPhoto {
+  width: 195px;
+  max-width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: center;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  display: block;
+  margin-top: 14px;
+}
+
 .pill {
   cursor: pointer;
   border: 1px solid var(--border);
