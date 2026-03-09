@@ -256,6 +256,21 @@ code {
   margin-top: 12px;
 }
 
+.videoEmbed {
+  margin-top: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.videoEmbed iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
 .link {
   font-weight: 800;
   color: rgba(255, 255, 255, 0.86);
