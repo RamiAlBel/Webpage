@@ -242,6 +242,10 @@ code {
   gap: 14px;
 }
 
+.moviesGrid {
+  grid-template-columns: 1fr;
+}
+
 .card {
   padding: 16px;
   border-radius: var(--radius);
