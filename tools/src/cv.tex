@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\setlength{\parindent}{0pt}
+\usepackage{enumitem}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lipsum}
+\usepackage[left=1.06cm,top=1.7cm,right=1.06cm,bottom=0.49cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+% CV of Rami Al-Belmpeisi
+\begin{document}
+\begin{center}
+    \textbf{\Large Rami Al-Belmpeisi}\\ 
+    \hrulefill
+\end{center}
+\begin{center}
+    Copenhagen, Denmark \textbullet \ ralbe@dtu.dk \textbullet \ +45 81 94 91 38 \\
+    ORCID: 0009-0009-5684-5241 \textbullet \ \href{https://github.com/RamiAlBel}{GitHub} \textbullet \ \href{https://scholar.google.com/citations?user=gXBdz6wAAAAJ&hl=el&oi=ao}{Google Scholar}
+\end{center}
+
+\vspace{0.5pt}
+\begin{center}
+    \textbf{Education}
+\end{center}
+\textbf{Technical University of Denmark (DTU)} \hfill Copenhagen, Denmark \\
+PhD in Applied Mathematics and Computer Science \hfill 2023 -- 2026 \\
+Section for Visual Computing.
+
+\vspace{8pt}
+\textbf{Niels Bohr Institute (NBI), University of Copenhagen (KU)} \hfill Copenhagen, Denmark \\
+MSc in Astrophysics \hfill 2020 -- 2022 \\
+Centre for Star and Planet Formation (StarPlan).
+
+\vspace{8pt}
+\textbf{Aristotle University of Thessaloniki (AUTH)} \hfill Thessaloniki, Greece \\
+BA in Physics \hfill 2015 -- 2020 \\
+Research Group: Gravitational Waves Group of AUTH.
+
+\vspace{8pt}
+\textbf{Eberhard Karls Universit\"at (EKUT)} \hfill T\"ubingen, Germany \\
+Study Abroad (Erasmus+) \hfill 2018 -- 2019 \\
+Research Group: Emily Noether Research Team.
+\section*{Experience}
+\noindent
+\textbf{Technical University of Denmark} \hfill Copenhagen, Denmark \\
+\textbf{PhD Researcher} \hfill 2023 -- 2026
+
+\vspace{3pt}
+\noindent\textit{\textbf{Focus I: Advancing Deep Learning \& Compute Methodologies}}
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=2pt, leftmargin=1.5em]
+    \item \textbf{Geometric Deep Learning \& XAI:} Developed a novel shape-centric Explainable AI framework establishing the first direct mapping between abstract high-dimensional weight spaces and distinct morphological structures. (Methodology submitted to ECCV 2026).
+    
+    \item \textbf{Feature Extraction (2D/3D):} Significant experience in both convolutional and transformer-based architectures to extract image features from high-dimensional domains (e.g., 2D images or 3D scalar/vector fields). Features are later used downstream for tasks such as classification, structure detection, and segmentation in both supervised and unsupervised settings.
+    
+    \item \textbf{High-Performance Computing (HPPC):} \textit{C++ Optimisation :} Proficient in CUDA for GPU clusters (memory management, kernels) and CPU parallelization (MPI, multi-threading, SIMD, asynchronous communication). \textit{Python Scaling:} Developed efficient CPU workflows (Numba JIT, MPI4Py, NumPy broadcasting) and deployed distributed PyTorch architectures for large-scale simulation processing on GPUs.
+\end{itemize}
+
+\vspace{3pt}
+\noindent\textit{\textbf{Focus II: Black Hole parameter estimation from hot spot kinematics}}
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=2pt, leftmargin=1.5em]
+    \item \textbf{Parameter Retrieval Framework:} Developed a deep learning pipeline to retrieve black hole spin ($\alpha$) and inclination ($i$) from simulated hot spot orbits within their Kerr spacetime via 3D GRMHD kinematics simulations.
+    \item \textbf{Robustness Testing:} Evaluated model performance against limited orbit visibility (10\%--100\%) and ability to probe diverse kinematic profiles, including sub-/super-Keplerian velocities and non-equatorial orbits.
+\end{itemize}
+
+\vspace{10pt}
+\noindent
+\textbf{Niels Bohr Institute} \hfill Copenhagen, Denmark \\
+\textbf{Researcher \& NOT Observing Summer School} \hfill 2020 -- 2022
+
+\vspace{3pt}
+\noindent\textit{\textbf{Focus I: Star Formation \& MHD Simulations}}
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=2pt, leftmargin=1.5em]
+    \item \textbf{Hydrodynamic Modeling :} Simulated star formation and early evolution inside turbulent molecular clouds using ideal MHD, performing zoom-in simulations with the oct-based AMR multi-physics code RAMSES (Copenhagen version).
+\end{itemize}
+
+\vspace{3pt}
+\noindent\textit{\textbf{Focus II: Radiative Transfer \& Synthetic Observations}}
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=2pt, leftmargin=1.5em]
+    \item \textbf{Synthetic Imaging (RADMC-3D):} Computed observational appearance (synthetic images) by solving the non-local radiative transfer problem for dusty media on RAMSES outputs, accounting for scattering and thermal emission.
+    \item \textbf{Bridging Theory \& Observation:} Designed a deep learning methodology tailored for protostellar objects, enabling direct comparison between real ALMA photometric observations and synthetic simulation data.
+\end{itemize}
+
+\vspace{3pt}
+\noindent\textit{\textbf{Other Experience}}
+\begin{itemize}[noitemsep, topsep=2pt, partopsep=0pt, parsep=2pt, leftmargin=1.5em]
+    \item \textbf{Observational Astronomy:} Executed remote observations at the Nordic Optical Telescope (NOT). Managed target selection via visibility curve analysis, optimized signal-to-noise ratios for narrow/broadband filters, and prepared observation blocks. Performed spectroscopic reduction on edge-on galaxies to derive dark matter rotation curves.
+    \item \textbf{Planetary Hydrodynamics:} Simulated the photoevaporation of planetary atmospheres under varying UV irradiation regimes. I used the hydrodynamics code "PLUTO" in C++ to model outflows, quantify atmospheric mass-loss rates, and estimate the timescale to reach hydrodynamic stability.
+    \item \textbf{High Energy Astrophysics:} Solved relativistic radial stability equations (TOV) to construct neutron star equilibrium models. Analyzed heat transfer mechanisms and convective stability for post-merger remnants using EoS prescriptions derived from full 3D GRMHD simulations.
+\end{itemize}
+\begin{center}
+    \textbf{Publications}
+\end{center}
+\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+    \item \textbf{Al-Belmpeisi, R.}$^\dagger$, Yfantis, A. I.$^\dagger$, "Deep Learning for Black Hole Parameter Estimation from Hotspot Kinematics." \textit{In preparation for Astronomy \& Astrophysics (A\&A)}. ($^\dagger$Co-first authorship)
+    
+    \item \textbf{Al-Belmpeisi, R.}, et al. "Simulated analogues II: a new methodology for non-parametric matching of models to observations." \textit{Monthly Notices of the Royal Astronomical Society (MNRAS)} 534.4 (2024): 3194-3210.
+    
+    \item Tuhtan, V., et al. "Simulated analogues I: apparent and physical evolution of young binary protostellar systems." \textit{Monthly Notices of the Royal Astronomical Society (MNRAS)} 534.4 (2024): 3176-3193.
+    
+    \item \textbf{Al-Belmpeisi, R.}, et al. "Identifying Nonalcoholic Fatty Liver Disease and Advanced Liver Fibrosis from MRI in UK Biobank." \textit{International Workshop on Machine Learning in Medical Imaging (MLMI)}, Springer Nature (2024).
+    
+    \item \textbf{Al-Belmpeisi, R.}, et al. "RESHAPE: Reconstruction-based Explainability for Shapes through importance estimation." \textit{In preparation (Intended for ECCV 2026)}.
+\end{itemize}
+\begin{center}
+    \textbf{Honours \& Awards}
+\end{center}
+\begin{itemize}[noitemsep, topsep=0pt, partopsep=0pt, parsep=0pt]
+    \item \textbf{Academic Excellence:} Qualified for university entrance among the top 0.55\% of Greek students nationwide.
+    \item \textbf{Top Graduate:} Achieved a BSc degree grade of 9.00/10.00, placing me in the top 1\% of Physics graduates.
+    \item \textbf{Physics/Math:} 12th place in the Greek Annual Physics Contest; Semi-finalist in National Mathematics and Logic Competition.
+    \item \textbf{Chess:} 1st place in the Thermaikos Chess Championship for two consecutive years (2014, 2015).
+\end{itemize}
+\begin{center}
+    \textbf{Skills \& Interests}
+\end{center}
+\textbf{Computing \& ML:} Python (PyTorch, Distributed Training, HPPC), C++, Deep Learning (Explainable AI, Parameter Estimation), 3D Image Analysis, Scientific Computing.\\[4pt]
+\textbf{Astrophysics Software:} Hydrodynamic Simulation Codes (\texttt{PLUTO}, \texttt{RAMSES}), Radiative Transfer (\texttt{RADMC-3D}).\\[4pt]
+\textbf{Interests:} Composing Music, Chess, Table Tennis.
+\end{document}
