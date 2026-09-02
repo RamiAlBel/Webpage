@@ -235,6 +235,73 @@ def _group(label, body):
     return '<div><span class="rw-glabel">' + label + '</span>' + body + '</div>'
 
 
+# ------------------------------------------------------------------ sections
+# "Physics, in motion" becomes a list of links out to the article pages, and
+# the music section becomes a single pointer at the Hobbies page. Both replace
+# embedded YouTube players, which is also why the homepage got lighter.
+ARTICLES_HTML = """<style>
+.av-item{display:grid;grid-template-columns:56px 1fr auto;gap:28px;align-items:center;
+  padding:34px 0;border-bottom:1px solid rgba(241,239,233,.18);text-decoration:none;
+  color:inherit;transition:padding-left .4s cubic-bezier(.2,.7,.2,1),color .3s}
+.av-item:hover{padding-left:14px;color:#ff4e1a}
+.av-num{font:500 13px/1.2 'JetBrains Mono',monospace;color:#ff4e1a;align-self:start;padding-top:8px}
+.av-title{margin:0;font-stretch:115%;font-weight:600;font-size:clamp(24px,3.4vw,46px);
+  line-height:1.02;letter-spacing:-.025em}
+.av-sub{display:block;margin-top:10px;max-width:60ch;font:400 16px/1.5 'Archivo',sans-serif;
+  letter-spacing:0;color:#8d8b85;font-stretch:100%}
+.av-go{font-size:22px;color:#ff4e1a}
+@media(max-width:700px){.av-item{grid-template-columns:36px 1fr;gap:14px}.av-go{display:none}}
+</style>"""
+
+ARTICLES = [
+    ("01", "photoevaporation", "Photoevaporation of planetary atmospheres",
+     "A close-in planet loses its atmosphere to its host star. What the outflow "
+     "looks like, and how fast it drains."),
+    ("02", "galactic-winds", "Supernova-driven galactic winds",
+     "Repeated explosions carve escape routes through a galaxy&#8217;s gas, and "
+     "hot material pours out along them."),
+    ("03", "interstellar-cloud", "Seeing through an interstellar cloud",
+     "Opaque in visible light, transparent in the infrared &#8212; a sweep "
+     "through wavelength until the stars come back."),
+    ("04", "mandelbrot-zoom", "Mandelbrot zoom beyond numerical precision",
+     "A deep zoom that continues until floating-point arithmetic itself becomes "
+     "the limiting factor."),
+]
+
+
+def articles_section():
+    rows = "".join(
+        '<a class="av-item" data-reveal="" data-cursor="Read" href="./articles/' + slug + '.html">'
+        '<span class="av-num">' + num + '</span>'
+        # sub-line sits OUTSIDE the h2: the blob-to-letter filter targets h1/h2,
+        # and at 16px it turns body text into an illegible smear.
+        '<div><h2 class="av-title">' + title + '</h2>'
+        '<span class="av-sub">' + sub + '</span></div>'
+        '<span class="av-go">&#8599;</span></a>'
+        for num, slug, title, sub in ARTICLES
+    )
+    return ARTICLES_HTML + rows
+
+
+def music_section():
+    return (
+        '<div data-reveal="" style="display:grid;grid-template-columns:1fr 1fr;gap:40px;'
+        'align-items:end;margin-bottom:8px">'
+        '<h2 style="margin:0;font-stretch:125%;font-weight:600;'
+        'font-size:clamp(36px,6vw,96px);line-height:.92;letter-spacing:-.03em;'
+        'text-transform:uppercase">Off<br><span style="color:#6f6d68">duty</span></h2>'
+        '<p style="margin:0;max-width:460px;font-size:17px;line-height:1.55;'
+        'color:#3a3936;text-wrap:pretty">Bass in Fuzzma, two solo projects, and since '
+        '2023 <strong style="font-weight:600">Simulated Analogues</strong> in Copenhagen '
+        '&#8212; whose debut record <em style="font-style:normal;color:#ff4e1a">Multiplicity</em> '
+        'came out in May. There is a timeline, and chess and table tennis at the bottom of it.'
+        '<a href="./hobbies.html" data-cursor="Open" style="display:inline-block;margin-top:22px;'
+        'padding:11px 16px;border:1px solid rgba(12,12,13,.35);color:#0c0c0d;'
+        'text-decoration:none;font:500 12px/1 \'JetBrains Mono\',monospace;'
+        'letter-spacing:.14em;text-transform:uppercase">Hobbies &#8594; Music &#8599;</a></p></div>'
+    )
+
+
 def research_html():
     astro = _group(
         "Star formation",
@@ -331,6 +398,37 @@ def main():
         raise SystemExit("research section not found - did the design change?")
     template = template[:sec.start(2)] + research_html() + template[sec.end(2):]
     template = template.replace("Three threads", "Four threads", 1)
+
+    # --- movies section becomes links out to the article pages ---
+    mov = re.search(r'(<section id="movies".*?margin-bottom:40px">.*?</div>)(.*?)(</section>)',
+                    template, re.S)
+    if not mov:
+        raise SystemExit("movies section not found - did the design change?")
+    template = template[:mov.start(2)] + articles_section() + template[mov.end(2):]
+    template = template.replace("03 &#8212; Movies", "03 &#8212; Articles")
+    template = template.replace("03 \u2014 Movies", "03 \u2014 Articles")
+    template = template.replace("Numerical experiments", "Write-ups")
+    template = template.replace('data-screen-label="Movies"', 'data-screen-label="Articles"')
+    template = template.replace('href="#movies" data-cursor="Go"', 'href="#movies" data-cursor="Go"')
+    template = template.replace(">03 Movies<", ">03 Articles<")
+
+    # --- music section points at the Hobbies page instead of embedding tracks ---
+    mus = re.search(r'(<section id="music".*?margin-bottom:40px">.*?</div>)(.*?)(</section>)',
+                    template, re.S)
+    if not mus:
+        raise SystemExit("music section not found - did the design change?")
+    template = template[:mus.end(1)] + music_section() + template[mus.start(3):]
+
+    # --- statement ---
+    old_quote = re.search(r'(>)(From star\u2011forming clouds.*?)(</p>)', template)
+    if old_quote is None:
+        old_quote = re.search(r'(>)(From star.{0,20}forming clouds.*?)(</p>)', template, re.S)
+    if old_quote:
+        template = (template[:old_quote.start(2)]
+                    + "A simulation is not an observation. "
+                      "<em style=\"font-style:normal;color:#ff4e1a\">Most of the work "
+                      "lives in the gap between them.</em>"
+                    + template[old_quote.end(2):])
 
     # --- preloader counter: show a % after the number ---
     old_progress = "progress: String(progress).padStart(3, \'0\'),"

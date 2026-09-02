@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A deep zoom into the Mandelbrot set, continuing until floating-point arithmetic itself becomes the limiting factor.">
+<title>Mandelbrot zoom beyond numerical precision · Rami Al-Belmpeisi</title>
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<header class="site-head mono">
+  <a class="brand" href="../index.html">R. Al&#8209;Belmpeisi</a>
+  <nav class="site-nav"><a href="../index.html">Home</a><a href="../about.html">About</a><a href="../publications.html">Publications</a><a href="../articles.html" aria-current="page">Articles</a><a href="../hobbies.html">Hobbies</a><a href="../contact.html">Contact</a></nav>
+</header>
+<main>
+  <div class="sec-rule mono"><span>04 &#8212; Numerics</span><a href="../articles.html" style="color:inherit;text-decoration:none">All articles &#8599;</a></div>
+  <h1 class="display">Mandelbrot zoom beyond numerical precision</h1>
+  <p class="lede">A deep zoom into the Mandelbrot set, continuing until floating-point arithmetic itself becomes the limiting factor.</p>
+  <div class="meta mono"><span>Floating point</span><span>Deep zoom</span><span>For fun</span></div>
+  <div class="video"><iframe src="https://www.youtube.com/embed/h9ZEaS0Lotk" title="Mandelbrot zoom beyond numerical precision" loading="lazy" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe></div>
+  <div class="prose"><p>The Mandelbrot set is defined by iterating one very short expression, and yet it has structure at every scale you care to look at. Zooming in never runs out of detail — which makes it an unusually honest stress test for the arithmetic doing the zooming.</p><p>Every step inward means resolving smaller differences between neighbouring points. Double-precision floating point carries roughly sixteen significant decimal digits, so at some depth the coordinates of adjacent pixels stop being distinguishable numbers at all. The image does not gently blur; it degrades into blocks and banding, because the computer is genuinely no longer able to tell those points apart.</p><p><strong>What to watch for:</strong> the point where the failure stops looking like the fractal and starts looking like the hardware. Going deeper requires changing the arithmetic — arbitrary precision, or perturbation methods that track differences from a reference orbit.</p><p>This one is not research. It is a good illustration of something that matters in research: the answer a simulation gives you is only ever as good as the numbers it is made of.</p></div>
+  
+  <a class="back mono" href="../articles.html">&#8592; Back to articles</a>
+</main>
+<footer class="site-foot mono">
+  <span>&copy; 2026 Rami Al-Belmpeisi</span>
+  <a href="../index.html">Home &#8599;</a>
+</footer>
+</body>
+</html>
