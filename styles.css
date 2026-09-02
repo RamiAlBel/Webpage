@@ -370,3 +370,51 @@ code {
     filter: none !important;
   }
 }
+
+/* ---- Scroll-driven portrait morph -------------------------------------- */
+/* <div class="morph"> holds two stacked images. The cartoon layer's opacity
+   is driven by scroll position in script.js, so the portrait drifts from the
+   photograph toward a blend of photo + drawing as you move down the page. */
+
+.morph {
+  position: relative;
+  width: 240px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  margin-top: 14px;
+  isolation: isolate;
+}
+
+.morph img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.morph .morph-top {
+  opacity: 0;            /* script.js drives this */
+  will-change: opacity;
+}
+
+/* Hover mode is used on pages too short to scroll. */
+.morph--hover .morph-top {
+  transition: opacity 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.morph--hover {
+  cursor: pointer;
+}
+
+/* Without JS (or with reduced motion) just show the photograph. */
+@media (prefers-reduced-motion: reduce) {
+  .morph .morph-top {
+    opacity: 0 !important;
+  }
+}
