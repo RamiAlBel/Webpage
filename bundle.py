@@ -21,7 +21,9 @@ def save(path, bundle):
     s = bundle['_raw']
     for t in TAGS:
         m = _span(s, t)
-        body = json.dumps(bundle[t], ensure_ascii=False)
+        # Compact separators: the manifest is ~1.2 MB of base64, so the default
+        # ', ' / ': ' spacing alone adds a couple of hundred KB to the file.
+        body = json.dumps(bundle[t], ensure_ascii=False, separators=(',', ':'))
         # A literal </script> inside a payload would close the host <script>
         # tag. JSON allows \/ so escape every slash after a '<'.
         body = body.replace('</', '<\\/')
