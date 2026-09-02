@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blob-to-Letter Scroll Demo</title>
+<style>
+  :root{
+    --bg:#0c0c0d;
+    --fg:#f1efe9;
+    --accent:#ff4e1a;
+    --muted:#7a7873;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:auto}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:0 6vw}
+  .spacer{height:60vh;display:flex;align-items:center}
+  .hint{color:var(--muted);font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+
+  section{padding:22vh 0}
+
+  /* The element that gets the goo filter.
+     isolation + a solid-alpha background-free block is important:
+     the filter operates on the element's own alpha channel. */
+  .goo{
+    display:inline-block;
+    will-change:filter;
+    /* filter is assigned by JS: filter:url(#goo-N) */
+  }
+
+  h1.big{
+    font-size:clamp(44px,11vw,150px);
+    line-height:.92;
+    font-weight:800;
+    letter-spacing:-.03em;
+  }
+  h2.mid{
+    font-size:clamp(32px,7vw,88px);
+    line-height:1;
+    font-weight:800;
+    letter-spacing:-.02em;
+  }
+  .accent{color:var(--accent)}
+  p.body{max-width:46ch;color:var(--muted);font-size:17px;line-height:1.6;margin-top:24px}
+
+  .controls{
+    position:fixed;right:16px;bottom:16px;z-index:50;
+    background:rgba(255,255,255,.06);backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.12);border-radius:10px;
+    padding:12px 14px;font-size:12px;color:var(--fg);
+    display:grid;gap:8px;width:210px;
+  }
+  .controls label{display:flex;justify-content:space-between;gap:8px;align-items:center}
+  .controls input{width:96px}
+  @media (prefers-reduced-motion: reduce){
+    .goo{filter:none !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Filters live here; JS clones one per animated element -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="goo-template" x="-30%" y="-30%" width="160%" height="160%"
+            color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 1 0" result="goo"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <div class="spacer"><span class="hint">scroll down ↓</span></div>
+
+  <section>
+    <h1 class="big"><span class="goo" data-goo>Rami<br>Al&nbsp;Bel</span></h1>
+    <p class="body">Each block below starts as merged blobs and resolves into type as it
+      scrolls into place. Pure SVG filter + a scroll listener — no libraries.</p>
+  </section>
+
+  <section>
+    <h2 class="mid"><span class="goo" data-goo data-goo-blur="26">Design<br>Digital<br>Products</span></h2>
+  </section>
+
+  <section>
+    <h2 class="mid"><span class="goo accent" data-goo data-goo-blur="34" data-goo-cut="0.46">Selected<br>Work</span></h2>
+  </section>
+
+  <section>
+    <h2 class="mid"><span class="goo" data-goo>About&nbsp;/&nbsp;Contact</span></h2>
+    <p class="body">Scroll back up — it re-blobs, because the effect is tied to scroll
+      position rather than a one-shot trigger.</p>
+  </section>
+
+  <div class="spacer"></div>
+</div>
+
+<div class="controls">
+  <strong style="font-size:12px;letter-spacing:.06em">TUNE</strong>
+  <label>max blur <input id="c-blur" type="range" min="4" max="60" value="30"></label>
+  <label>threshold <input id="c-cut" type="range" min="20" max="70" value="42"></label>
+  <label>range <input id="c-range" type="range" min="20" max="100" value="55"></label>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var tpl = document.getElementById('goo-template');
+  var defs = tpl.parentNode;
+  var items = [];
+  var uid = 0;
+
+  document.querySelectorAll('[data-goo]').forEach(function(el){
+    var id = 'goo-' + (uid++);
+    var f = tpl.cloneNode(true);
+    f.id = id;
+    defs.appendChild(f);
+    el.style.filter = 'url(#' + id + ')';
+    items.push({
+      el: el,
+      blurNode: f.querySelector('feGaussianBlur'),
+      matNode:  f.querySelector('feColorMatrix'),
+      maxBlur:  parseFloat(el.dataset.gooBlur) || null,
+      cut:      parseFloat(el.dataset.gooCut)  || null
+    });
+  });
+
+  // global tuning (the sliders write into these)
+  var G = { blur: 30, cut: 0.42, range: 0.55 };
+
+  function ease(t){ return t<0 ? 0 : t>1 ? 1 : 1 - Math.pow(1 - t, 3); }
+
+  function update(){
+    var vh = window.innerHeight;
+    for (var i=0;i<items.length;i++){
+      var it = items[i];
+      var r  = it.el.getBoundingClientRect();
+      if (r.bottom < -vh || r.top > vh*2){ continue; } // off-screen, skip
+
+      // 0 when the element's top sits at the bottom of the viewport,
+      // 1 once it has travelled `range` of a viewport upward.
+      var travelled = (vh - r.top) / (vh * G.range);
+      var p = ease(travelled);
+
+      var maxBlur = it.maxBlur != null ? it.maxBlur : G.blur;
+      var cut     = it.cut     != null ? it.cut     : G.cut;
+
+      // blur: max -> 0
+      var b = maxBlur * (1 - p);
+
+      // alpha contrast: steep (blobby) -> identity (crisp)
+      // row is  0 0 0 A B   with threshold = -B / A
+      var A = 1 + (19 * (1 - p));
+      var B = -(A * cut) * (1 - p);
+
+      it.blurNode.setAttribute('stdDeviation', b.toFixed(2));
+      it.matNode.setAttribute('values',
+        '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ' + A.toFixed(3) + ' ' + B.toFixed(3));
+    }
+    ticking = false;
+  }
+
+  var ticking = false;
+  function onScroll(){
+    if (!ticking){ ticking = true; requestAnimationFrame(update); }
+  }
+
+  if (!reduce){
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    update();
+  } else {
+    items.forEach(function(it){ it.el.style.filter = 'none'; });
+  }
+
+  // sliders
+  function bind(id, key, scale){
+    var s = document.getElementById(id);
+    s.addEventListener('input', function(){
+      G[key] = parseFloat(s.value) * scale;
+      onScroll();
+    });
+  }
+  bind('c-blur','blur',1);
+  bind('c-cut','cut',0.01);
+  bind('c-range','range',0.01);
+})();
+</script>
+</body>
+</html>

@@ -350,3 +350,23 @@ code {
     padding: 8px 8px;
   }
 }
+
+/* ---- Blob-to-letter scroll effect -------------------------------------- */
+/* Headings are blurred + alpha-thresholded into blobs, then resolve into
+   crisp type as they scroll toward the centre of the viewport.
+   The filter is assigned per-element by script.js. */
+
+.goo-target {
+  will-change: filter;
+}
+
+/* Until the script runs, keep headings unfiltered so nothing flashes. */
+.no-js .goo-target {
+  filter: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .goo-target {
+    filter: none !important;
+  }
+}
