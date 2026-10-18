@@ -276,87 +276,160 @@ def research_html():
 
 
 # ---------------------------------------------------------------------------
-# Slimmer homepage: hero -> About -> Research -> Contact.
-# Articles and music live on their own pages (articles.html, hobbies.html) and
-# are reached from the nav; the full publication list duplicated the research
-# rows, and the statement band is gone.
+# Homepage layout, modelled on a classic academic page: a banner with the name,
+# a stacked contact block with the portrait beside it, one linked "Bio:"
+# paragraph and a few labelled one-liners, then the research rows and a slim
+# footer. Articles and music live on their own pages (articles.html,
+# hobbies.html) and are reached from the nav and the one-liners.
+# Edit the PROFILE_* / BIO / LINES data below and re-run this script.
 # ---------------------------------------------------------------------------
 
-MONO_LABEL = ("font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;"
-              "text-transform:uppercase")
+LINK = '#b8390b'  # darker site orange, readable as body-text links on cream
+SCHOLAR = "https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao"
+ORBIT = "https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/"
 
 NAV_LINKS = [
-    ("About", "#about", "Go"),
     ("Research", "#research", "Go"),
     ("Articles", "./articles.html", "Open"),
     ("Hobbies", "./hobbies.html", "Open"),
-    ("Contact", "#contact", "Go"),
 ]
 
-ABOUT_FACTS = [
-    ("Now", "PhD, DTU Compute"),
-    ("MSc", "Niels Bohr Institute, Copenhagen"),
-    ("BSc", "Aristotle University of Thessaloniki"),
-    ("Based", "Copenhagen, Denmark"),
+PROFILE_LINES = [
+    "Rami Al&#8209;Belmpeisi",
+    "PhD Researcher",
+    "Section for Visual Computing, DTU Compute",
+    "Technical University of Denmark",
+    "2800 Kongens Lyngby, Denmark",
+]
+EMAIL = "ralbe@dtu.dk"
+
+
+def a(href, text):
+    ext = ' target="_blank" rel="noreferrer"' if href.startswith("http") else ""
+    return '<a href="' + href + '"' + ext + ' data-cursor="Open">' + text + '</a>'
+
+
+BIO = (
+    "I am a PhD researcher at " + a("https://www.compute.dtu.dk/", "DTU Compute")
+    + " at the " + a("https://www.dtu.dk/english/", "Technical University of Denmark")
+    + ", in the Section for Visual Computing, where I develop deep learning methods "
+    "for medical imaging &#8212; mainly the diagnosis and staging of liver disease "
+    "from MRI in the " + a("https://www.ukbiobank.ac.uk/", "UK Biobank")
+    + ". My PhD is funded by " + a("https://www.novonordisk.com/", "Novo Nordisk")
+    + " through the Novo STAR programme; the thesis is submitted and the defence is "
+    "in December 2026. Before DTU, I did my MSc at the "
+    + a("https://www.nbi.ku.dk/english/", "Niels Bohr Institute") + " at the "
+    + a("https://www.ku.dk/english/", "University of Copenhagen")
+    + ", applying deep learning to simulations of star formation and to matching "
+    "them against observations. I started out in physics at the "
+    + a("https://www.auth.gr/en/", "Aristotle University of Thessaloniki")
+    + ", with an Erasmus exchange at the "
+    + a("https://uni-tuebingen.de/en/", "University of T&#252;bingen")
+    + " working on the photoevaporation of planetary atmospheres. Alongside "
+    "medical imaging, I work on estimating the spin of the black hole at the centre "
+    "of our galaxy with collaborators at " + a("https://www.iaa.csic.es/en", "IAA-CSIC")
+    + " in Granada, and on making learned shape representations explainable."
+)
+
+LINES = [
+    ("Publications", "My publications are available through " + a(SCHOLAR, "Google Scholar")
+     + " and " + a(ORBIT, "DTU Orbit") + ", and are listed by topic "
+     + a("#research", "below") + "."),
+    ("Articles", "Illustrated write-ups on astrophysical simulations and numerics are on the "
+     + a("./articles.html", "articles page") + "."),
+    ("Outside research", "I play music with "
+     + a("https://simulatedanalogues.com/", "Simulated Analogues")
+     + " in Copenhagen; more on the " + a("./hobbies.html", "hobbies page") + "."),
+    ("CV", '<a href="./cv.pdf" download="" data-cursor="PDF">Download (PDF)</a>'),
 ]
 
-ABOUT_PARAGRAPHS = [
-    "I&#8217;m a PhD researcher at DTU Compute, in the Section for Visual "
-    "Computing, where I develop deep learning methods for medical imaging "
-    "&#8212; mainly diagnosing and staging liver disease from MRI in the UK "
-    "Biobank. The project is funded by Novo Nordisk through the Novo STAR "
-    "programme. My thesis is submitted, and the defence is in December 2026.",
+PAGE_PAD = "max(clamp(20px,4vw,64px),calc((100% - 1100px) / 2))"
 
-    "I came to machine learning from physics. I studied physics at the "
-    "Aristotle University of Thessaloniki, with an Erasmus exchange in "
-    "T&#252;bingen working on the photoevaporation of planetary atmospheres, "
-    "and did my MSc at the Niels Bohr Institute, applying deep learning to "
-    "simulations of star formation and to matching them against real "
-    "observations.",
-
-    "I still work across both fields: estimating the spin of the black hole at "
-    "the centre of our galaxy from hot-spot images, with collaborators at "
-    "IAA-CSIC in Granada, and making learned shape representations "
-    "explainable. Outside research I play music in Copenhagen with Simulated "
-    "Analogues &#8212; more on the <a href=\"./hobbies.html\" data-cursor=\"Open\" "
-    "style=\"color:#f1efe9;border-bottom:1px solid #ff4e1a\">hobbies page</a>.",
-]
-
-ABOUT_CSS = """<style>
-.ab-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:64px;
-  align-items:start;padding-top:44px}
-.ab-h2{margin:0 0 40px;font-stretch:125%;font-weight:600;font-size:clamp(36px,5vw,84px);
-  line-height:.92;letter-spacing:-.03em;text-transform:uppercase}
-.ab-facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:12px 20px}
-.ab-facts dt{font:400 12px/1.6 'JetBrains Mono',monospace;letter-spacing:.14em;
-  text-transform:uppercase;color:#8d8b85}
-.ab-facts dd{margin:0;font-size:15px;line-height:1.5;color:#d9d6cf}
-.ab-text{display:flex;flex-direction:column;gap:22px;max-width:64ch}
-.ab-text p{margin:0;font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:#d9d6cf;
-  text-wrap:pretty}
-.ab-text p:first-child{color:#f1efe9}
-@media (max-width:860px){.ab-grid{grid-template-columns:1fr;gap:40px}}
-</style>"""
+PROFILE_CSS = """<style>
+.pf{background:#f1efe9;color:#0c0c0d;padding:72px PAD 8px}
+.pf a{color:LINK;text-decoration:none;transition:color .2s}
+.pf a:hover{color:#0c0c0d;text-decoration:underline}
+.pf-top{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:start;
+  padding-bottom:40px;border-bottom:1px solid rgba(12,12,13,.18)}
+.pf-card{margin:0;font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:#1d1c1a}
+.pf-card span{display:block}
+.pf-photo{width:200px;height:240px}
+.pf-body{padding:40px 0 64px;border-bottom:1px solid rgba(12,12,13,.18)}
+.pf-body p{margin:0 0 18px;max-width:none;font-size:clamp(16px,1.25vw,18px);
+  line-height:1.75;color:#2a2926;text-align:justify;hyphens:auto}
+.pf-body p:last-child{margin-bottom:0}
+.pf-body strong{font-weight:600;color:#0c0c0d}
+.pf-bio{margin-bottom:26px!important}
+#research{padding-left:PAD!important;padding-right:PAD!important;padding-top:72px!important}
+@media (max-width:760px){
+  .pf-top{grid-template-columns:1fr;gap:28px}
+  .pf-photo{order:-1;width:150px;height:180px}
+  .pf-body p{text-align:left}
+}
+</style>""".replace("PAD", PAGE_PAD).replace("LINK", LINK)
 
 
-def about_section():
-    facts = "".join("<dt>" + k + "</dt><dd>" + v + "</dd>" for k, v in ABOUT_FACTS)
-    paras = "".join("<p>" + t + "</p>" for t in ABOUT_PARAGRAPHS)
+def banner_section():
     return (
-        '\n  <!-- ABOUT (dark) -->\n'
-        '  <section id="about" data-screen-label="About" style="background:#0c0c0d;'
-        'color:#f1efe9;padding:120px clamp(20px,4vw,64px)">\n'
-        '    <div data-reveal="" style="display:flex;justify-content:space-between;'
-        'align-items:baseline;border-bottom:1px solid rgba(241,239,233,.2);'
-        'padding-bottom:18px">'
-        '<span style="' + MONO_LABEL + ';color:#8d8b85">01 &#8212; About</span>'
-        '<a href="./cv.pdf" download="" data-cursor="PDF" style="' + MONO_LABEL
-        + ';color:#f1efe9">CV &#8595;</a></div>'
-        + ABOUT_CSS
-        + '<div class="ab-grid"><div data-reveal=""><h2 class="ab-h2">About</h2>'
-        '<dl class="ab-facts">' + facts + '</dl></div>'
-        '<div class="ab-text" data-reveal="">' + paras + '</div></div>\n'
-        '  </section>\n'
+        '<section id="top" data-screen-label="Hero" style="position:relative;'
+        'height:clamp(280px,44vh,440px);display:flex;align-items:center;'
+        'justify-content:center;padding:80px clamp(20px,4vw,64px) 40px;'
+        'box-sizing:border-box;background:#0c0c0d;color:#f1efe9;overflow:hidden">'
+        '<img data-site-backdrop="" src="' + HERO_BACKDROP + '" alt="" aria-hidden="true" '
+        'style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'
+        'z-index:0;pointer-events:none">'
+        '<div aria-hidden="true" style="position:absolute;inset:0;z-index:0;'
+        'pointer-events:none;background:linear-gradient(180deg,rgba(12,12,13,.55) 0%,'
+        'rgba(12,12,13,.30) 50%,rgba(12,12,13,.60) 100%)"></div>'
+        '<h1 data-reveal="" style="position:relative;margin:0;text-align:center;'
+        'font-weight:300;font-stretch:100%;font-size:clamp(38px,6vw,84px);'
+        'line-height:1.05;letter-spacing:-.01em">Rami Al&#8209;Belmpeisi</h1>'
+        '</section>'
+    )
+
+
+def profile_section():
+    card = "".join("<span>" + line + "</span>" for line in PROFILE_LINES)
+    card += ('<span>Email: <a href="mailto:' + EMAIL + '" data-cursor="Mail">'
+             + EMAIL + '</a></span>')
+    photo = (
+        '<div class="site-morph pf-photo" style="position:relative;overflow:hidden;'
+        'isolation:isolate">'
+        '<img src="' + PHOTO + '" alt="Portrait of Rami Al-Belmpeisi" '
+        'style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
+        '<img class="site-morph-top" src="' + CARTOON + '" alt="" aria-hidden="true" '
+        'style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'
+        'opacity:0;will-change:opacity"></div>'
+    )
+    lines = "".join("<p><strong>" + k + ":</strong> " + v + "</p>" for k, v in LINES)
+    return (
+        '\n  <!-- PROFILE (light) -->\n'
+        '  <section id="about" class="pf" data-screen-label="About">'
+        + PROFILE_CSS
+        + '<div class="pf-top" data-reveal=""><p class="pf-card">' + card + '</p>'
+        + photo + '</div>'
+        '<div class="pf-body" data-reveal=""><p class="pf-bio"><strong>Bio:</strong> '
+        + BIO + '</p>' + lines + '</div>'
+        '</section>\n'
+    )
+
+
+def footer_section():
+    links = [("LinkedIn", "https://www.linkedin.com/in/rami-albelbeisi-/"),
+             ("GitHub", "https://github.com/RamiAlBel"),
+             ("Scholar", SCHOLAR), ("DTU Orbit", ORBIT)]
+    items = "".join(
+        '<a href="' + h + '" target="_blank" rel="noreferrer" data-cursor="Open" '
+        'style="color:#f1efe9">' + l + '</a>' for l, h in links)
+    return (
+        '<!-- FOOTER (dark) -->\n'
+        '  <footer id="contact" data-screen-label="Footer" style="background:#0c0c0d;'
+        'color:#f1efe9;padding:36px ' + PAGE_PAD + ';display:flex;'
+        'justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;'
+        "font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.12em;"
+        'text-transform:uppercase"><div style="display:flex;gap:24px;flex-wrap:wrap">'
+        + items + '</div><span style="color:#8d8b85">&#169; 2026 Rami Al&#8209;Belmpeisi'
+        '</span></footer>'
     )
 
 
@@ -367,64 +440,59 @@ def _drop_section(template, comment, attr):
 
 
 def restructure(template):
-    # smaller name, on one line
-    template = template.replace(
-        "font-size:clamp(48px,9vw,190px);line-height:.86",
-        "font-size:clamp(40px,5.4vw,96px);line-height:.95", 1)
-    template = re.sub(r'>Rami<br>(Al.Belmpeisi</h1>)', r'>Rami \1', template, count=1)
-
-    # no "Scroll" hint, colour portrait
-    template = template.replace("<span>Scroll ↓</span>", "", 1)
-    template = template.replace(";filter:grayscale(1) contrast(1.1)", "")
-
-    # fewer sections
+    # drop sections that live on their own pages now
     template = _drop_section(template, "TEXTURE BAND (dark)", 'data-screen-label="Statement"')
     template = _drop_section(template, "PUBLICATIONS (light)", 'id="publications"')
     template = _drop_section(template, "MOVIES (dark)", 'id="movies"')
     template = _drop_section(template, "MUSIC (light)", 'id="music"')
+    template = _drop_section(template, "ABOUT (dark)", 'id="about"')
+    template = _drop_section(template, "PROFILE (light)", 'id="about"')
 
-    if 'id="about"' not in template:
-        anchor = "\n  <!-- RESEARCH (light) -->"
-        if anchor not in template:
-            raise SystemExit("research section anchor not found - did the design change?")
-        template = template.replace(anchor, about_section() + anchor, 1)
+    # banner replaces the full-height hero
+    template = re.sub(r'<section id="top".*?</section>', lambda m: banner_section(),
+                      template, count=1, flags=re.S)
 
-    # section numbering and the research header link
-    template = re.sub(r'0\d (?:—|&#8212;) Research', '02 &#8212; Research', template, count=1)
-    template = re.sub(r'0\d (?:—|&#8212;) Contact', '03 &#8212; Contact', template, count=1)
+    # profile block (contact + photo, bio, one-liners) before the research rows
+    anchor = "\n  <!-- RESEARCH (light) -->"
+    if anchor not in template:
+        raise SystemExit("research section anchor not found - did the design change?")
+    template = template.replace(anchor, profile_section() + anchor, 1)
+
+    # big contact section becomes a slim footer (email is in the profile block)
+    template = re.sub(
+        r'<!-- CONTACT \(dark\) -->\s*<section id="contact".*?</section>',
+        lambda m: footer_section(), template, count=1, flags=re.S)
+    template = re.sub(r'<!-- FOOTER \(dark\) -->\s*<footer id="contact".*?</footer>',
+                      lambda m: footer_section(), template, count=1, flags=re.S)
+
+    # research header: plain label + Scholar link
+    template = re.sub(r'0\d (?:—|&#8212;) Research', 'Research', template, count=1)
     template = re.sub(
         r'<span style="[^"]*">(?:Four|Three) threads</span>',
-        '<a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" '
-        'target="_blank" rel="noreferrer" data-cursor="Open" style="' + MONO_LABEL
-        + ';color:#0c0c0d">Google Scholar &#8599;</a>', template, count=1)
+        '<a href="' + SCHOLAR + '" target="_blank" rel="noreferrer" data-cursor="Open" '
+        "style=\"font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;"
+        'text-transform:uppercase;color:#0c0c0d">Google Scholar &#8599;</a>',
+        template, count=1)
+
+    # phones: nav links don't fit (brand + CV stay)
+    template = re.sub(r'<style>/\* site-mobile \*/.*?</style>\n  ', '', template,
+                      count=1, flags=re.S)
+    template = template.replace(
+        "<!-- NAV -->",
+        "<style>/* site-mobile */@media (max-width:760px){.site-nav{display:none!important}}"
+        "</style>\n  <!-- NAV -->", 1)
 
     # nav
     link = ('<a href="{href}" data-cursor="{cur}" style="font:500 12px/1 '
             "'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;"
             'color:#fff">{label}</a>')
-    # contact email was as oversized as the name
-    template = template.replace(
-        "font-size:clamp(34px,7vw,128px);line-height:.9",
-        "font-size:clamp(28px,4.6vw,80px);line-height:.95", 1)
-
-    # phones: nav links don't fit (brand + CV stay), hero meta row too cramped
-    template = template.replace(
-        '<div style="position:relative;display:grid;grid-template-columns:120px 1fr 1fr;',
-        '<div class="hero-meta" style="position:relative;display:grid;'
-        'grid-template-columns:120px 1fr 1fr;', 1)
-    if "/* site-mobile */" not in template:
-        template = template.replace(
-            "<!-- NAV -->",
-            "<style>/* site-mobile */@media (max-width:760px){.site-nav{display:none!important}"
-            ".hero-meta{grid-template-columns:120px 1fr!important;gap:20px!important}"
-            ".hero-meta>div:last-child{display:none!important}}</style>\n  <!-- NAV -->", 1)
-
     nav = ('<nav class="site-nav" style="display:flex;gap:26px">\n'
            + "\n".join("      " + link.format(href=h, cur=c, label=l) for l, h, c in NAV_LINKS)
            + "\n    </nav>")
     template = re.sub(r'<nav\b[^>]*>.*?</nav>', lambda m: nav,
                       template, count=1, flags=re.S)
     return template
+
 
 
 def main():
@@ -442,7 +510,7 @@ def main():
     # Skip if a previous run already wrapped it, so the script is re-runnable
     # against an already-patched file instead of nesting a second morph block.
     photo_id, cartoon_id = PHOTO, CARTOON
-    if 'class="site-morph"' in template:
+    if 'site-morph-top' in template:
         m = None
     else:
         m = re.search(r'<img\b[^>]*alt="Portrait of Rami Al-Belmpeisi"[^>]*>', template)
@@ -472,8 +540,7 @@ def main():
     hero_p = re.search(r'(>)(PhD researcher at DTU Visual Computing\..*?)(</p>)', template)
     if hero_p:
         template = template[:hero_p.start(2)] + new_hero + template[hero_p.end(2):]
-    elif new_hero not in template:
-        raise SystemExit("hero standfirst not found - did the design change?")
+
 
     # --- research section: four threads with clickable papers ---
     sec = re.search(r'(<section id="research".*?margin-bottom:8px">.*?</div>)(.*?)(</section>)',
@@ -531,7 +598,7 @@ def main():
             )
             template = template.replace(band.group(0), band.group(0) + layer, 1)
 
-    # --- slimmer layout: About -> Research -> Contact ---
+    # --- academic layout: banner, profile + bio, research, footer ---
     template = restructure(template)
 
     # --- inject the effects script ---
