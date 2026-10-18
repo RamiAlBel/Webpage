@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Research of Rami Al-Belmpeisi: astrophysics, 3D imaging and deep learning, with papers by topic.">
+<title>Research · Rami Al-Belmpeisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap">
+<style>
+/* Shared shell for vitae.html, research.html and about.html
+   (tools/build_subpages.py copies it). Mirrors the homepage: name banner over the JWST image, cream
+   body, dark footer. Keep the lists in sync with cv.tex / cv.pdf. */
+:root {
+  --ink: #0c0c0d;
+  --paper: #f1efe9;
+  --text: #1d1c1a;
+  --body: #2a2926;
+  --dim: #6f6d68;
+  --rule: rgba(12, 12, 13, .18);
+  --link: #b8390b;
+  --pad: max(clamp(20px, 4vw, 64px), calc((100% - 1100px) / 2));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--ink); text-decoration: underline; }
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+}
+
+/* header (same as homepage) */
+.head {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px clamp(20px, 4vw, 64px); color: #fff;
+}
+.head a { color: #fff; }
+.head a:hover { color: #ff4e1a; text-decoration: none; }
+.head nav { display: flex; gap: 26px; }
+.head [aria-current="page"] { padding-bottom: 4px; border-bottom: 1px solid #ff4e1a; }
+
+/* banner */
+.banner {
+  position: relative; height: clamp(240px, 38vh, 380px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 20px 40px; background: var(--ink); color: var(--paper); overflow: hidden;
+}
+.banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(12,12,13,.55) 0%, rgba(12,12,13,.3) 50%, rgba(12,12,13,.6) 100%);
+}
+.banner h1 {
+  position: relative; z-index: 1; margin: 0;
+  font-weight: 300; font-size: clamp(38px, 6vw, 84px); line-height: 1.05; letter-spacing: -.01em;
+}
+
+/* body */
+main { padding: 56px var(--pad) 88px; }
+.top {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+}
+.top p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--body); }
+.download {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--ink); color: var(--paper);
+  border: 1px solid var(--ink); transition: background .2s, color .2s;
+}
+.download:hover { background: transparent; color: var(--ink); text-decoration: none; }
+.download svg { width: 16px; height: 16px; flex: none; }
+
+section { margin-top: 40px; }
+h2 {
+  margin: 0 0 14px; font-weight: 500; font-size: 21px; letter-spacing: -.005em; color: var(--link);
+}
+ul.cv { margin: 0; padding: 0; list-style: none; }
+ul.cv li {
+  position: relative; display: flex; justify-content: space-between; gap: 24px;
+  padding: 7px 0 7px 22px; font-size: 17px; line-height: 1.5; color: var(--body);
+}
+ul.cv li::before {
+  content: ""; position: absolute; left: 4px; top: 16px;
+  width: 5px; height: 5px; background: var(--text);
+}
+ul.cv .yr { flex: none; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+ol.pubs { margin: 0; padding-left: 22px; }
+ol.pubs li { padding: 7px 0 7px 6px; font-size: 16.5px; line-height: 1.6; color: var(--body); }
+ol.pubs li::marker { color: var(--dim); }
+ol.pubs strong { color: var(--ink); font-weight: 600; }
+ol.pubs em { font-style: italic; }
+.sub { margin: 18px 0 4px; font-size: 15px; font-style: italic; color: var(--dim); }
+
+footer {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  padding: 36px var(--pad); background: var(--ink); color: var(--paper);
+}
+footer a { color: var(--paper); }
+footer a:hover { color: #ff4e1a; text-decoration: none; }
+footer .links { display: flex; gap: 24px; flex-wrap: wrap; }
+footer .copy { color: #8d8b85; }
+
+@media (max-width: 760px) {
+  .head .brand { display: none; }
+  .head { justify-content: center; }
+  ul.cv li { flex-direction: column; gap: 0; }
+  ul.cv .yr { color: var(--dim); font-size: 15px; }
+}
+@media print {
+  .head, .banner, footer, .download { display: none; }
+  main { padding: 0; }
+}
+</style>
+<style>
+.intro{margin:0 0 8px;max-width:70ch;font-size:18px;line-height:1.65;color:var(--body)}
+.para{margin:14px 0 0;max-width:70ch;font-size:17px;line-height:1.65;color:var(--body)}
+</style>
+<style>
+/* research rows (from patch_index.RESEARCH_CSS) */
+
+.rw-row{display:grid;grid-template-columns:80px 1fr 1fr;gap:32px;align-items:center;
+  padding:44px 0;border-bottom:1px solid rgba(12,12,13,.2)}
+.rw-num{font:500 13px/1.2 'JetBrains Mono',monospace;color:#ff4e1a;align-self:start;padding-top:6px}
+.rw-h2{margin:0;font-stretch:125%;font-weight:600;font-size:clamp(36px,5vw,84px);
+  line-height:.92;letter-spacing:-.03em;text-transform:uppercase}
+.rw-right{display:flex;flex-direction:column;gap:22px;max-width:520px}
+.rw-glabel{display:block;font:400 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;
+  text-transform:uppercase;color:#6f6d68;margin-bottom:10px}
+.rw-paper{display:block;color:#0c0c0d;text-decoration:none;padding:9px 0;
+  border-top:1px solid rgba(12,12,13,.14);
+  transition:padding-left .35s cubic-bezier(.2,.7,.2,1),color .35s}
+.rw-paper:hover{padding-left:12px;color:#ff4e1a}
+.rw-title{display:block;font-size:16px;line-height:1.4;text-wrap:pretty}
+.rw-meta{display:block;margin-top:4px;font:400 11px/1 'JetBrains Mono',monospace;
+  letter-spacing:.1em;text-transform:uppercase;color:#6f6d68}
+.rw-note{display:block;padding:9px 0;border-top:1px solid rgba(12,12,13,.14);
+  font:400 12px/1.4 'JetBrains Mono',monospace;letter-spacing:.1em;
+  text-transform:uppercase;color:#6f6d68}
+@media (max-width:860px){
+  .rw-row{grid-template-columns:44px 1fr;gap:18px;align-items:start}
+  .rw-right{grid-column:1/-1;max-width:none}
+}
+</style>
+<style>.rw-h2{color:#0c0c0d;font-weight:600}</style>
+</head>
+<body>
+
+<header class="head mono">
+  <a class="brand" href="./index.html">R. Al&#8209;Belmpeisi</a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./vitae.html">Vitae</a>
+    <a href="./research.html" aria-current="page">Research</a>
+    <a href="./about.html">About</a>
+  </nav>
+</header>
+
+<div class="banner">
+  <img src="./images/jwst/nebula-cavity.jpg" alt="" aria-hidden="true">
+  <h1>Research</h1>
+</div>
+
+<main>
+  <p class="intro">My work uses deep learning to connect models and simulations with real data, in astrophysics and in medical imaging. Papers are grouped by topic below; the full list is on <a href="./vitae.html">the vitae page</a> and <a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" target="_blank" rel="noreferrer">Google Scholar</a>.</p>
+  <div class="rw-row"><span class="rw-num">01</span><h2 class="rw-h2">Astro&#8209;<br>physics</h2><div class="rw-right"><div><span class="rw-glabel">Star formation</span><a class="rw-paper" href="https://academic.oup.com/mnras/article/534/4/3176/7783277" target="_blank" rel="noreferrer"><span class="rw-title">Simulated analogues I: apparent and physical evolution of young binary protostellar systems</span><span class="rw-meta">MNRAS 534.4 &#183; 2024 &#8599;</span></a><a class="rw-paper" href="https://academic.oup.com/mnras/article/534/4/3194/7774401" target="_blank" rel="noreferrer"><span class="rw-title">Simulated analogues II: a new methodology for non-parametric matching of models to observations</span><span class="rw-meta">MNRAS 534.4 &#183; 2024 &#8599;</span></a></div><div><span class="rw-glabel">Black holes</span><a class="rw-paper" href="https://arxiv.org/abs/2608.18208" target="_blank" rel="noreferrer"><span class="rw-title">A deep learning algorithm for black hole spin estimation using hot-spot secondary images</span><span class="rw-meta">arXiv &#183; 2026 &#8599;</span></a></div></div></div><div class="rw-row"><span class="rw-num">02</span><h2 class="rw-h2">3D<br>imaging</h2><div class="rw-right"><div><span class="rw-glabel">Liver MRI</span><a class="rw-paper" href="https://link.springer.com/chapter/10.1007/978-3-031-73290-4_22" target="_blank" rel="noreferrer"><span class="rw-title">Identifying Nonalcoholic Fatty Liver Disease and Advanced Liver Fibrosis from MRI in UK Biobank</span><span class="rw-meta">MLMI @ MICCAI &#183; 2024 &#8599;</span></a><a class="rw-paper" href="https://openreview.net/forum?id=PH9Ty1t8F6" target="_blank" rel="noreferrer"><span class="rw-title">Deep Learning for Liver Disease Stratification: Findings from UKBB MRI</span><span class="rw-meta">MIDL &#183; 2026 &#8599;</span></a></div></div></div><div class="rw-row"><span class="rw-num">03</span><h2 class="rw-h2">Deep<br>learning</h2><div class="rw-right"><div><span class="rw-glabel">Explainability</span><a class="rw-paper" href="./papers/reshape.pdf" target="_blank" rel="noreferrer"><span class="rw-title">RESHAPE: Representation Learning for the Explainability of Shapes</span><span class="rw-meta">iMIMIC @ MICCAI &#183; 2026 &#8599;</span></a></div><div><span class="rw-glabel">Geometric deep learning</span><span class="rw-note">Under submission</span></div></div></div>
+</main>
+
+<footer class="mono">
+  <div class="links">
+    <a href="https://www.linkedin.com/in/rami-albelbeisi-/" target="_blank" rel="noreferrer">LinkedIn</a>
+    <a href="https://github.com/RamiAlBel" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" target="_blank" rel="noreferrer">Scholar</a>
+    <a href="https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/" target="_blank" rel="noreferrer">DTU Orbit</a>
+  </div>
+  <span class="copy">&copy; 2026 Rami Al&#8209;Belmpeisi</span>
+</footer>
+
+</body>
+</html>

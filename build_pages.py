@@ -14,11 +14,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 NAV = [
     ("Home", "index.html"),
+    ("Vitae", "vitae.html"),
+    ("Research", "research.html"),
     ("About", "about.html"),
-    ("Publications", "publications.html"),
-    ("Articles", "articles.html"),
-    ("Hobbies", "hobbies.html"),
-    ("Contact", "contact.html"),
 ]
 
 
@@ -348,8 +346,8 @@ def main():
         open(path, "w", encoding="utf-8").write(article_page(a))
         written.append(path)
 
-    for name, content in [("articles.html", articles_index()),
-                          ("hobbies.html", hobbies_page())]:
+    # hobbies.html is now a redirect to about.html (tools/build_subpages.py builds About)
+    for name, content in [("articles.html", articles_index())]:
         path = os.path.join(ROOT, name)
         open(path, "w", encoding="utf-8").write(content)
         written.append(path)

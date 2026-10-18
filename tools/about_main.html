@@ -1,0 +1,57 @@
+<main>
+  <p class="intro">Outside research I mostly make music, play chess and write chess engines.
+    This page is the personal side; the work is on <a href="./research.html">Research</a> and
+    <a href="./vitae.html">Vitae</a>.</p>
+
+  <section>
+    <h2>Music</h2>
+    <ul class="cv">
+      <li><span><a href="https://simulatedanalogues.com/" target="_blank" rel="noreferrer">Simulated Analogues</a>, Copenhagen &middot; guitar, bass, synths and voice</span><span class="yr">2023 &ndash;</span></li>
+      <li><span>Solo projects Bubblewalker and For Her Eyes, written and recorded on my own</span><span class="yr">2019 &ndash; 2023</span></li>
+      <li><span>Fuzzma, Thessaloniki &middot; bass</span><span class="yr">2017 &ndash; 2019</span></li>
+    </ul>
+    <p class="para">Simulated Analogues released its debut record, <em>Multiplicity</em>, on 10 May 2026: twelve tracks on LP and
+      digital. Listen on <a href="https://www.youtube.com/playlist?list=OLAK5uy_meTV0qohTJ_auPtF5lv4UMeCwjThxDXj0" target="_blank" rel="noreferrer">YouTube</a>
+      or find <a href="https://linktr.ee/simulatedanalogues" target="_blank" rel="noreferrer">all the links</a>.</p>
+  </section>
+
+  <section>
+    <h2>Chess and table tennis</h2>
+    <ul class="cv">
+      <li><span>First place, Thermaikos Chess Championship, GR</span><span class="yr">2014, 2015</span></li>
+    </ul>
+    <p class="para">These days chess is mostly blitz and the occasional over-the-board game. Table tennis I play regularly,
+      and competitively enough to care about it.</p>
+  </section>
+
+  <section id="quirky">
+    <h2>Play Quirky2000</h2>
+    <p class="para"><a href="https://github.com/RamiAlBel/Quirky2000" target="_blank" rel="noreferrer">Quirky2000</a> is my
+      chess engine: C++, alpha-beta search and a neural-network (NNUE) evaluation trained on Lichess games scored by
+      Stockfish. Every idea in it was tested in engine-vs-engine matches before it was kept. The version below is
+      compiled to WebAssembly and runs entirely in your browser, on one thread.</p>
+
+    <div id="qk" class="qk" data-engine="quirky/engine.js">
+      <div class="qk-board" role="grid" aria-label="Chess board"></div>
+      <div class="qk-panel">
+        <p class="qk-status" role="status" aria-live="polite">Press start.</p>
+        <div class="qk-row">
+          <button class="qk-btn qk-white" type="button">New: white</button>
+          <button class="qk-btn qk-black" type="button">New: black</button>
+          <button class="qk-btn qk-undo" type="button">Undo</button>
+        </div>
+        <div class="qk-row">
+          <label class="qk-label" for="qk-level">Level</label>
+          <select class="qk-level" id="qk-level">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <p class="qk-moves" aria-label="Moves"></p>
+        <p class="qk-note">Click a piece, then a highlighted square. Pawns promote to a queen.
+          The engine and its 6&nbsp;MB network load the first time you scroll here.</p>
+      </div>
+    </div>
+  </section>
+</main>

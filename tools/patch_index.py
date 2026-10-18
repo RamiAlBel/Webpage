@@ -260,18 +260,20 @@ def research_html():
                  "UKBB MRI", "MIDL &#183; 2026")
     )
 
-    xai = _paper("./papers/reshape.pdf",
-                 "RESHAPE: Representation Learning for the Explainability of Shapes",
-                 "Preprint &#183; to appear")
+    imaging = _group("Liver MRI", medical)
 
-    geo = '<span class="rw-note">Under submission</span>'
+    dl = _group(
+        "Explainability",
+        _paper("./papers/reshape.pdf",
+               "RESHAPE: Representation Learning for the Explainability of Shapes",
+               "iMIMIC @ MICCAI &#183; 2026"),
+    ) + _group("Geometric deep learning", '<span class="rw-note">Under submission</span>')
 
     return (
         RESEARCH_CSS
         + _row("01", "Astro&#8209;<br>physics", astro)
-        + _row("02", "Medical<br>imaging", medical)
-        + _row("03", "Explainable<br>AI", xai)
-        + _row("04", "Geometric<br>deep learning", geo)
+        + _row("02", "3D<br>imaging", imaging)
+        + _row("03", "Deep<br>learning", dl)
     )
 
 
@@ -289,9 +291,10 @@ SCHOLAR = "https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;
 ORBIT = "https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/"
 
 NAV_LINKS = [
-    ("Research", "#research", "Go"),
-    ("Articles", "./articles.html", "Open"),
-    ("Hobbies", "./hobbies.html", "Open"),
+    ("Home", "./index.html", "Go"),
+    ("Vitae", "./vitae.html", "Open"),
+    ("Research", "./research.html", "Open"),
+    ("About", "./about.html", "Open"),
 ]
 
 PROFILE_LINES = [
@@ -333,13 +336,14 @@ BIO = (
 
 LINES = [
     ("Publications", "My publications are available through " + a(SCHOLAR, "Google Scholar")
-     + " and " + a(ORBIT, "DTU Orbit") + ", and are listed by topic "
-     + a("#research", "below") + "."),
+     + " and " + a(ORBIT, "DTU Orbit") + ", and are grouped by topic on the "
+     + a("./research.html", "research page") + "."),
     ("Articles", "Illustrated write-ups on astrophysical simulations and numerics are on the "
      + a("./articles.html", "articles page") + "."),
     ("Outside research", "I play music with "
      + a("https://simulatedanalogues.com/", "Simulated Analogues")
-     + " in Copenhagen; more on the " + a("./hobbies.html", "hobbies page") + "."),
+     + " in Copenhagen and write chess engines; you can play mine on the "
+     + a("./about.html#quirky", "about page") + "."),
     ("CV", "Positions, education, awards and publications are on the "
      + a("./vitae.html", "vitae page") + ", with a "
      + '<a href="./cv.pdf" download="Rami_Al-Belmpeisi_CV.pdf" data-cursor="PDF">PDF download</a>.'),
@@ -454,11 +458,11 @@ def restructure(template):
     template = re.sub(r'<section id="top".*?</section>', lambda m: banner_section(),
                       template, count=1, flags=re.S)
 
-    # profile block (contact + photo, bio, one-liners) before the research rows
-    anchor = "\n  <!-- RESEARCH (light) -->"
-    if anchor not in template:
-        raise SystemExit("research section anchor not found - did the design change?")
-    template = template.replace(anchor, profile_section() + anchor, 1)
+    # profile block (contact + photo, bio, one-liners) before the footer
+    m = re.search(r"\n  <!-- (?:RESEARCH \(light\)|CONTACT \(dark\)|FOOTER \(dark\)) -->", template)
+    if not m:
+        raise SystemExit("profile anchor not found - did the design change?")
+    template = template[:m.start()] + profile_section() + template[m.start():]
 
     # big contact section becomes a slim footer (email is in the profile block)
     template = re.sub(
@@ -476,24 +480,37 @@ def restructure(template):
         'text-transform:uppercase;color:#0c0c0d">Google Scholar &#8599;</a>',
         template, count=1)
 
-    # header CV button opens the vitae page instead of downloading the PDF
-    template = re.sub(r'<a href="\./cv\.pdf" download="" data-cursor="PDF" (style="[^"]*")>CV ↓</a>',
-                      r'<a href="./vitae.html" data-cursor="Open" \1>CV</a>', template, count=1)
+    # header: no separate CV button (Vitae is in the menu)
+    template = re.sub(r'\s*<a href="\./(?:cv\.pdf|vitae\.html)"[^>]*>CV(?: ↓)?</a>(?=\s*</header>)',
+                      '', template, count=1)
+
+    # research lives on its own page now (research.html, tools/build_research.py)
+    template = re.sub(r'\s*<!-- RESEARCH \(light\) -->\s*<section id="research".*?</section>',
+                      '', template, count=1, flags=re.S)
 
     # phones: nav links don't fit (brand + CV stay)
     template = re.sub(r'<style>/\* site-mobile \*/.*?</style>\n  ', '', template,
                       count=1, flags=re.S)
     template = template.replace(
         "<!-- NAV -->",
-        "<style>/* site-mobile */@media (max-width:760px){.site-nav{display:none!important}}"
+        "<style>/* site-mobile */.site-nav a[aria-current=page]{padding-bottom:4px;"
+        "border-bottom:1px solid #ff4e1a}"
+        "@media (max-width:760px){.site-brand{display:none!important}"
+        "header:has(.site-nav){justify-content:center!important}}"
         "</style>\n  <!-- NAV -->", 1)
+
+    # brand gets a class so phones can hide it
+    template = template.replace('<a href="#top" data-cursor="Top" style=',
+                                '<a class="site-brand" href="#top" data-cursor="Top" style=', 1)
 
     # nav
     link = ('<a href="{href}" data-cursor="{cur}" style="font:500 12px/1 '
             "'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;"
             'color:#fff">{label}</a>')
     nav = ('<nav class="site-nav" style="display:flex;gap:26px">\n'
-           + "\n".join("      " + link.format(href=h, cur=c, label=l) for l, h, c in NAV_LINKS)
+           + "\n".join("      " + link.format(href=h, cur=c, label=l).replace(
+               '<a href="./index.html"', '<a aria-current="page" href="./index.html"')
+               for l, h, c in NAV_LINKS)
            + "\n    </nav>")
     template = re.sub(r'<nav\b[^>]*>.*?</nav>', lambda m: nav,
                       template, count=1, flags=re.S)
@@ -551,9 +568,8 @@ def main():
     # --- research section: four threads with clickable papers ---
     sec = re.search(r'(<section id="research".*?margin-bottom:8px">.*?</div>)(.*?)(</section>)',
                     template, re.S)
-    if not sec:
-        raise SystemExit("research section not found - did the design change?")
-    template = template[:sec.start(2)] + research_html() + template[sec.end(2):]
+    if sec:  # gone once restructure() has run; research.html carries it now
+        template = template[:sec.start(2)] + research_html() + template[sec.end(2):]
     template = template.replace("Three threads", "Four threads", 1)
 
     # --- preloader counter: show a % after the number ---

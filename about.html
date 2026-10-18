@@ -1,103 +1,217 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="About Rami Al-Belmpeisi" />
-    <title>About Me · Rami Al-Belmpeisi</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <header class="top">
-      <div class="wrap">
-        <a class="brand" href="index.html" aria-label="Home">
-          <span class="dot" aria-hidden="true"></span>
-          <span>Rami Al-Belmpeisi</span>
-        </a>
-        <nav class="nav" aria-label="Primary">
-          <a href="index.html">Home</a>
-          <a href="about.html">About Me</a>
-          <a href="publications.html">Publications</a>
-          <a href="articles.html">Articles</a>
-          <a href="hobbies.html">Hobbies</a>
-          <a href="contact.html">Contact Me</a>
-        </nav>
-      </div>
-    </header>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Rami Al-Belmpeisi outside research: music, chess, table tennis, and Quirky2000, a chess engine you can play in the browser.">
+<title>About · Rami Al-Belmpeisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap">
+<style>
+/* Shared shell for vitae.html, research.html and about.html
+   (tools/build_subpages.py copies it). Mirrors the homepage: name banner over the JWST image, cream
+   body, dark footer. Keep the lists in sync with cv.tex / cv.pdf. */
+:root {
+  --ink: #0c0c0d;
+  --paper: #f1efe9;
+  --text: #1d1c1a;
+  --body: #2a2926;
+  --dim: #6f6d68;
+  --rule: rgba(12, 12, 13, .18);
+  --link: #b8390b;
+  --pad: max(clamp(20px, 4vw, 64px), calc((100% - 1100px) / 2));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--ink); text-decoration: underline; }
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+}
 
-    <main id="top" class="main">
-      <section class="section">
-        <div class="wrap">
-          <h1 class="title">About Me</h1>
-          <div class="twoCol">
-            <div>
-              <p class="p">
-                I am a PhD researcher in Applied Mathematics and Computer Science at the Technical
-                University of Denmark (DTU), Section for Visual Computing, based in Copenhagen.
-                My work lies at the intersection of geometric deep learning, explainable AI, and
-                high‑performance computing, with applications in astrophysics and medical imaging.
-              </p>
-              <div class="morph">
-                <img src="./images/rami-photo.jpg" alt="Rami Al-Belmpeisi" />
-                <img
-                  class="morph-top"
-                  src="./images/rami-cartoon.jpg"
-                  alt=""
-                  aria-hidden="true"
-                />
-              </div>
-            </div>
-            <div>
-              <ul class="list">
-                <li>
-                  Education: PhD in Applied Mathematics and Computer Science (DTU); MSc in
-                  Astrophysics (Niels Bohr Institute, University of Copenhagen); BA in Physics
-                  (Aristotle University of Thessaloniki) with Erasmus studies at Eberhard Karls
-                  Universität Tübingen.
-                </li>
-                <li>
-                  Research: geometric deep learning and explainability for 2D/3D data, parameter
-                  estimation for black holes from hotspot kinematics, and large‑scale simulations of
-                  star formation and planetary atmospheres.
-                </li>
-                <li>
-                  Tools &amp; interests: Python and C++ for scientific computing, hydrodynamic and
-                  radiative‑transfer codes (PLUTO, RAMSES, RADMC‑3D), and outside of research,
-                  composing music, chess, and table tennis.
-                </li>
-              </ul>
-              <p class="p" style="margin-top: 10px">
-                You can also find me on
-                <a
-                  class="link"
-                  href="https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/"
-                  target="_blank"
-                  rel="noreferrer"
-                  >DTU Orbit</a
-                >
-                and
-                <a
-                  class="link"
-                  href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&hl=el&oi=ao"
-                  target="_blank"
-                  rel="noreferrer"
-                  >Google Scholar</a
-                >.
-              </p>
-            </div>
-          </div>
+/* header (same as homepage) */
+.head {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px clamp(20px, 4vw, 64px); color: #fff;
+}
+.head a { color: #fff; }
+.head a:hover { color: #ff4e1a; text-decoration: none; }
+.head nav { display: flex; gap: 26px; }
+.head [aria-current="page"] { padding-bottom: 4px; border-bottom: 1px solid #ff4e1a; }
+
+/* banner */
+.banner {
+  position: relative; height: clamp(240px, 38vh, 380px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 20px 40px; background: var(--ink); color: var(--paper); overflow: hidden;
+}
+.banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(12,12,13,.55) 0%, rgba(12,12,13,.3) 50%, rgba(12,12,13,.6) 100%);
+}
+.banner h1 {
+  position: relative; z-index: 1; margin: 0;
+  font-weight: 300; font-size: clamp(38px, 6vw, 84px); line-height: 1.05; letter-spacing: -.01em;
+}
+
+/* body */
+main { padding: 56px var(--pad) 88px; }
+.top {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+}
+.top p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--body); }
+.download {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--ink); color: var(--paper);
+  border: 1px solid var(--ink); transition: background .2s, color .2s;
+}
+.download:hover { background: transparent; color: var(--ink); text-decoration: none; }
+.download svg { width: 16px; height: 16px; flex: none; }
+
+section { margin-top: 40px; }
+h2 {
+  margin: 0 0 14px; font-weight: 500; font-size: 21px; letter-spacing: -.005em; color: var(--link);
+}
+ul.cv { margin: 0; padding: 0; list-style: none; }
+ul.cv li {
+  position: relative; display: flex; justify-content: space-between; gap: 24px;
+  padding: 7px 0 7px 22px; font-size: 17px; line-height: 1.5; color: var(--body);
+}
+ul.cv li::before {
+  content: ""; position: absolute; left: 4px; top: 16px;
+  width: 5px; height: 5px; background: var(--text);
+}
+ul.cv .yr { flex: none; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+ol.pubs { margin: 0; padding-left: 22px; }
+ol.pubs li { padding: 7px 0 7px 6px; font-size: 16.5px; line-height: 1.6; color: var(--body); }
+ol.pubs li::marker { color: var(--dim); }
+ol.pubs strong { color: var(--ink); font-weight: 600; }
+ol.pubs em { font-style: italic; }
+.sub { margin: 18px 0 4px; font-size: 15px; font-style: italic; color: var(--dim); }
+
+footer {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  padding: 36px var(--pad); background: var(--ink); color: var(--paper);
+}
+footer a { color: var(--paper); }
+footer a:hover { color: #ff4e1a; text-decoration: none; }
+footer .links { display: flex; gap: 24px; flex-wrap: wrap; }
+footer .copy { color: #8d8b85; }
+
+@media (max-width: 760px) {
+  .head .brand { display: none; }
+  .head { justify-content: center; }
+  ul.cv li { flex-direction: column; gap: 0; }
+  ul.cv .yr { color: var(--dim); font-size: 15px; }
+}
+@media print {
+  .head, .banner, footer, .download { display: none; }
+  main { padding: 0; }
+}
+</style>
+<style>
+.intro{margin:0 0 8px;max-width:70ch;font-size:18px;line-height:1.65;color:var(--body)}
+.para{margin:14px 0 0;max-width:70ch;font-size:17px;line-height:1.65;color:var(--body)}
+</style>
+<link rel="stylesheet" href="./quirky/play.css">
+<script src="./quirky/play.js" defer></script>
+</head>
+<body>
+
+<header class="head mono">
+  <a class="brand" href="./index.html">R. Al&#8209;Belmpeisi</a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./vitae.html">Vitae</a>
+    <a href="./research.html">Research</a>
+    <a href="./about.html" aria-current="page">About</a>
+  </nav>
+</header>
+
+<div class="banner">
+  <img src="./images/jwst/nebula-cavity.jpg" alt="" aria-hidden="true">
+  <h1>About</h1>
+</div>
+
+<main>
+  <p class="intro">Outside research I mostly make music, play chess and write chess engines.
+    This page is the personal side; the work is on <a href="./research.html">Research</a> and
+    <a href="./vitae.html">Vitae</a>.</p>
+
+  <section>
+    <h2>Music</h2>
+    <ul class="cv">
+      <li><span><a href="https://simulatedanalogues.com/" target="_blank" rel="noreferrer">Simulated Analogues</a>, Copenhagen &middot; guitar, bass, synths and voice</span><span class="yr">2023 &ndash;</span></li>
+      <li><span>Solo projects Bubblewalker and For Her Eyes, written and recorded on my own</span><span class="yr">2019 &ndash; 2023</span></li>
+      <li><span>Fuzzma, Thessaloniki &middot; bass</span><span class="yr">2017 &ndash; 2019</span></li>
+    </ul>
+    <p class="para">Simulated Analogues released its debut record, <em>Multiplicity</em>, on 10 May 2026: twelve tracks on LP and
+      digital. Listen on <a href="https://www.youtube.com/playlist?list=OLAK5uy_meTV0qohTJ_auPtF5lv4UMeCwjThxDXj0" target="_blank" rel="noreferrer">YouTube</a>
+      or find <a href="https://linktr.ee/simulatedanalogues" target="_blank" rel="noreferrer">all the links</a>.</p>
+  </section>
+
+  <section>
+    <h2>Chess and table tennis</h2>
+    <ul class="cv">
+      <li><span>First place, Thermaikos Chess Championship, GR</span><span class="yr">2014, 2015</span></li>
+    </ul>
+    <p class="para">These days chess is mostly blitz and the occasional over-the-board game. Table tennis I play regularly,
+      and competitively enough to care about it.</p>
+  </section>
+
+  <section id="quirky">
+    <h2>Play Quirky2000</h2>
+    <p class="para"><a href="https://github.com/RamiAlBel/Quirky2000" target="_blank" rel="noreferrer">Quirky2000</a> is my
+      chess engine: C++, alpha-beta search and a neural-network (NNUE) evaluation trained on Lichess games scored by
+      Stockfish. Every idea in it was tested in engine-vs-engine matches before it was kept. The version below is
+      compiled to WebAssembly and runs entirely in your browser, on one thread.</p>
+
+    <div id="qk" class="qk" data-engine="quirky/engine.js">
+      <div class="qk-board" role="grid" aria-label="Chess board"></div>
+      <div class="qk-panel">
+        <p class="qk-status" role="status" aria-live="polite">Press start.</p>
+        <div class="qk-row">
+          <button class="qk-btn qk-white" type="button">New: white</button>
+          <button class="qk-btn qk-black" type="button">New: black</button>
+          <button class="qk-btn qk-undo" type="button">Undo</button>
         </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="wrap">
-        <span>© <span id="year"></span> Rami Al-Belmpeisi</span>
-        <a class="link" href="#top">Back to top</a>
+        <div class="qk-row">
+          <label class="qk-label" for="qk-level">Level</label>
+          <select class="qk-level" id="qk-level">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <p class="qk-moves" aria-label="Moves"></p>
+        <p class="qk-note">Click a piece, then a highlighted square. Pawns promote to a queen.
+          The engine and its 6&nbsp;MB network load the first time you scroll here.</p>
       </div>
-    </footer>
+    </div>
+  </section>
+</main>
 
-    <script src="./script.js"></script>
-  </body>
+<footer class="mono">
+  <div class="links">
+    <a href="https://www.linkedin.com/in/rami-albelbeisi-/" target="_blank" rel="noreferrer">LinkedIn</a>
+    <a href="https://github.com/RamiAlBel" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" target="_blank" rel="noreferrer">Scholar</a>
+    <a href="https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/" target="_blank" rel="noreferrer">DTU Orbit</a>
+  </div>
+  <span class="copy">&copy; 2026 Rami Al&#8209;Belmpeisi</span>
+</footer>
+
+</body>
 </html>
-

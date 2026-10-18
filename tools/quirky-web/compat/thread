@@ -1,0 +1,22 @@
+// Web build: single-threaded. A "thread" runs its function at once, so search::start() is synchronous.
+#pragma once
+#include <chrono>
+#include <utility>
+namespace std {
+class thread {
+    bool j_ = false;
+public:
+    thread() noexcept = default;
+    template <class F, class... A> explicit thread(F&& f, A&&... a) { std::forward<F>(f)(std::forward<A>(a)...); j_ = true; }
+    thread(thread&& o) noexcept : j_(o.j_) { o.j_ = false; }
+    thread& operator=(thread&& o) noexcept { j_ = o.j_; o.j_ = false; return *this; }
+    bool joinable() const noexcept { return j_; }
+    void join() { j_ = false; }
+    void detach() { j_ = false; }
+    static unsigned hardware_concurrency() noexcept { return 1; }
+};
+namespace this_thread {
+template <class R, class P> inline void sleep_for(const chrono::duration<R, P>&) {}
+inline void yield() noexcept {}
+}
+}

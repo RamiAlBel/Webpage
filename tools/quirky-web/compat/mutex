@@ -1,0 +1,7 @@
+// Web build: single-threaded, so locks are no-ops.
+#pragma once
+namespace std {
+struct mutex { void lock() {} void unlock() {} bool try_lock() { return true; } };
+template <class M> struct lock_guard { explicit lock_guard(M&) {} lock_guard(const lock_guard&) = delete; };
+template <class M> struct unique_lock { explicit unique_lock(M&) {} void lock() {} void unlock() {} };
+}

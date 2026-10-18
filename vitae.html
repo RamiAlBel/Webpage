@@ -6,9 +6,10 @@
 <meta name="description" content="Curriculum vitae of Rami Al-Belmpeisi: positions, education, grants and awards, publications.">
 <title>Vitae · Rami Al-Belmpeisi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&family=Press+Start+2P&display=swap">
 <style>
-/* Vitae page. Mirrors the homepage: name banner over the JWST image, cream
+/* Shared shell for vitae.html, research.html and about.html
+   (tools/build_subpages.py copies it). Mirrors the homepage: name banner over the JWST image, cream
    body, dark footer. Keep the lists in sync with cv.tex / cv.pdf. */
 :root {
   --ink: #0c0c0d;
@@ -45,8 +46,7 @@ a:hover { color: var(--ink); text-decoration: underline; }
 .head a { color: #fff; }
 .head a:hover { color: #ff4e1a; text-decoration: none; }
 .head nav { display: flex; gap: 26px; }
-.head .cv { border: 1px solid #fff; padding: 9px 14px; }
-.head [aria-current="page"] { border-bottom: 1px solid #ff4e1a; }
+.head [aria-current="page"] { padding-bottom: 4px; border-bottom: 1px solid #ff4e1a; }
 
 /* banner */
 .banner {
@@ -111,7 +111,8 @@ footer .links { display: flex; gap: 24px; flex-wrap: wrap; }
 footer .copy { color: #8d8b85; }
 
 @media (max-width: 760px) {
-  .head nav { display: none; }
+  .head .brand { display: none; }
+  .head { justify-content: center; }
   ul.cv li { flex-direction: column; gap: 0; }
   ul.cv .yr { color: var(--dim); font-size: 15px; }
 }
@@ -124,13 +125,13 @@ footer .copy { color: #8d8b85; }
 <body>
 
 <header class="head mono">
-  <a href="./index.html">R. Al&#8209;Belmpeisi</a>
+  <a class="brand" href="./index.html">R. Al&#8209;Belmpeisi</a>
   <nav>
-    <a href="./index.html#research">Research</a>
-    <a href="./articles.html">Articles</a>
-    <a href="./hobbies.html">Hobbies</a>
+    <a href="./index.html">Home</a>
+    <a href="./vitae.html" aria-current="page">Vitae</a>
+    <a href="./research.html">Research</a>
+    <a href="./about.html">About</a>
   </nav>
-  <a class="cv" href="./vitae.html" aria-current="page">CV</a>
 </header>
 
 <div class="banner">
