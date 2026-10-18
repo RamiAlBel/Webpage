@@ -249,6 +249,11 @@ def research_html():
         _paper("https://arxiv.org/abs/2608.18208",
                "A deep learning algorithm for black hole spin estimation using "
                "hot-spot secondary images", "arXiv &#183; 2026"),
+    ) + _group(
+        "Neutron stars",
+        _paper("https://ikee.lib.auth.gr/record/336492/files/Al-Belbeisi-BSc.pdf",
+               "Neutron Star Models with a Finite-Temperature Equation of State",
+               "BSc thesis &#183; Aristotle University of Thessaloniki &#183; 2021"),
     )
 
     medical = (
