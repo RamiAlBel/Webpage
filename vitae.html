@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Curriculum vitae of Rami Al-Belmpeisi: positions, education, grants and awards, publications.">
+<title>Vitae · Rami Al-Belmpeisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Vitae page. Mirrors the homepage: name banner over the JWST image, cream
+   body, dark footer. Keep the lists in sync with cv.tex / cv.pdf. */
+:root {
+  --ink: #0c0c0d;
+  --paper: #f1efe9;
+  --text: #1d1c1a;
+  --body: #2a2926;
+  --dim: #6f6d68;
+  --rule: rgba(12, 12, 13, .18);
+  --link: #b8390b;
+  --pad: max(clamp(20px, 4vw, 64px), calc((100% - 1100px) / 2));
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--ink); text-decoration: underline; }
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+}
+
+/* header (same as homepage) */
+.head {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px clamp(20px, 4vw, 64px); color: #fff;
+}
+.head a { color: #fff; }
+.head a:hover { color: #ff4e1a; text-decoration: none; }
+.head nav { display: flex; gap: 26px; }
+.head .cv { border: 1px solid #fff; padding: 9px 14px; }
+.head [aria-current="page"] { border-bottom: 1px solid #ff4e1a; }
+
+/* banner */
+.banner {
+  position: relative; height: clamp(240px, 38vh, 380px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 20px 40px; background: var(--ink); color: var(--paper); overflow: hidden;
+}
+.banner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.banner::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(12,12,13,.55) 0%, rgba(12,12,13,.3) 50%, rgba(12,12,13,.6) 100%);
+}
+.banner h1 {
+  position: relative; z-index: 1; margin: 0;
+  font-weight: 300; font-size: clamp(38px, 6vw, 84px); line-height: 1.05; letter-spacing: -.01em;
+}
+
+/* body */
+main { padding: 56px var(--pad) 88px; }
+.top {
+  display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+}
+.top p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--body); }
+.download {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--ink); color: var(--paper);
+  border: 1px solid var(--ink); transition: background .2s, color .2s;
+}
+.download:hover { background: transparent; color: var(--ink); text-decoration: none; }
+.download svg { width: 16px; height: 16px; flex: none; }
+
+section { margin-top: 40px; }
+h2 {
+  margin: 0 0 14px; font-weight: 500; font-size: 21px; letter-spacing: -.005em; color: var(--link);
+}
+ul.cv { margin: 0; padding: 0; list-style: none; }
+ul.cv li {
+  position: relative; display: flex; justify-content: space-between; gap: 24px;
+  padding: 7px 0 7px 22px; font-size: 17px; line-height: 1.5; color: var(--body);
+}
+ul.cv li::before {
+  content: ""; position: absolute; left: 4px; top: 16px;
+  width: 5px; height: 5px; background: var(--text);
+}
+ul.cv .yr { flex: none; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+ol.pubs { margin: 0; padding-left: 22px; }
+ol.pubs li { padding: 7px 0 7px 6px; font-size: 16.5px; line-height: 1.6; color: var(--body); }
+ol.pubs li::marker { color: var(--dim); }
+ol.pubs strong { color: var(--ink); font-weight: 600; }
+ol.pubs em { font-style: italic; }
+.sub { margin: 18px 0 4px; font-size: 15px; font-style: italic; color: var(--dim); }
+
+footer {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  padding: 36px var(--pad); background: var(--ink); color: var(--paper);
+}
+footer a { color: var(--paper); }
+footer a:hover { color: #ff4e1a; text-decoration: none; }
+footer .links { display: flex; gap: 24px; flex-wrap: wrap; }
+footer .copy { color: #8d8b85; }
+
+@media (max-width: 760px) {
+  .head nav { display: none; }
+  ul.cv li { flex-direction: column; gap: 0; }
+  ul.cv .yr { color: var(--dim); font-size: 15px; }
+}
+@media print {
+  .head, .banner, footer, .download { display: none; }
+  main { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="head mono">
+  <a href="./index.html">R. Al&#8209;Belmpeisi</a>
+  <nav>
+    <a href="./index.html#research">Research</a>
+    <a href="./articles.html">Articles</a>
+    <a href="./hobbies.html">Hobbies</a>
+  </nav>
+  <a class="cv" href="./vitae.html" aria-current="page">CV</a>
+</header>
+
+<div class="banner">
+  <img src="./images/jwst/nebula-cavity.jpg" alt="" aria-hidden="true">
+  <h1>Vitae</h1>
+</div>
+
+<main>
+  <div class="top">
+    <p>Rami Al&#8209;Belmpeisi &middot; Copenhagen, Denmark &middot;
+      <a href="mailto:ralbe@dtu.dk">ralbe@dtu.dk</a> &middot;
+      ORCID <a href="https://orcid.org/0009-0009-5684-5241" target="_blank" rel="noreferrer">0009-0009-5684-5241</a></p>
+    <a class="download mono" href="./cv.pdf" download="Rami_Al-Belmpeisi_CV.pdf">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M8 1.5v9M4.2 6.8 8 10.6l3.8-3.8M2 11.5v3h12v-3" stroke-linecap="square"/>
+      </svg>
+      Download PDF
+    </a>
+  </div>
+
+  <section>
+    <h2>Positions Held</h2>
+    <ul class="cv">
+      <li><span>Visiting PhD Student, UiT The Arctic University of Norway, Troms&oslash;, NO</span><span class="yr">2025 &ndash; 2026</span></li>
+      <li><span>PhD Student, DTU Compute, Technical University of Denmark, DK</span><span class="yr">2023 &ndash; 2026</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <ul class="cv">
+      <li><span>PhD in Applied Mathematics and Computer Science, Technical University of Denmark, DK</span><span class="yr">2026</span></li>
+      <li><span>MSc in Astrophysics, Niels Bohr Institute, University of Copenhagen, DK</span><span class="yr">2022</span></li>
+      <li><span>BSc in Physics, Aristotle University of Thessaloniki, GR</span><span class="yr">2020</span></li>
+      <li><span>Erasmus+ Exchange, Eberhard Karls Universit&auml;t T&uuml;bingen, DE</span><span class="yr">2018 &ndash; 2019</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Grants &amp; Awards</h2>
+    <ul class="cv">
+      <li><span>Winning team, programming challenge, PhD Summer School on Uncertainty in ML, DTU</span><span class="yr">2026</span></li>
+      <li><span>Travel grant for a research stay at UiT, Otto M&oslash;nsted Foundation, DK</span><span class="yr">2025</span></li>
+      <li><span>First prize, poster competition, HAMLET-PHYSICS, Niels Bohr Institute, DK</span><span class="yr">2024</span></li>
+      <li><span>PhD scholarship, Novo Nordisk STAR PhD Programme, DK</span><span class="yr">2023</span></li>
+      <li><span>BSc in Physics in the top 1% of graduates (9.00/10), Aristotle University of Thessaloniki</span><span class="yr">2020</span></li>
+      <li><span>&ldquo;The Great Moment for Education&rdquo; award, Eurobank, GR</span><span class="yr">2015</span></li>
+      <li><span>12th place, Greek Annual Physics Contest, GR</span><span class="yr">2013</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Publications</h2>
+    <ol class="pubs">
+      <li><strong>R. Al-Belmpeisi</strong>, K. Wickstr&oslash;m, J. V. Sundgaard, P. H. Larsen, A. B. Dahl, R. Jenssen, M. Kampffmeyer.
+        <a href="./papers/reshape.pdf">RESHAPE: Representation Learning for the Explainability of Shapes</a>.
+        <em>iMIMIC, MICCAI 2026 Workshops</em>, LNCS, Springer, 2026 (in press).</li>
+      <li><strong>R. Al-Belmpeisi</strong>, J. V. Sundgaard, P. H. Larsen, A. B. Dahl.
+        <a href="https://openreview.net/forum?id=PH9Ty1t8F6" target="_blank" rel="noreferrer">Deep Learning for Liver Disease Stratification: Findings from UKBB MRI</a>.
+        <em>MIDL</em>, PMLR 315:4384&ndash;4400, 2026.</li>
+      <li><strong>R. Al-Belmpeisi</strong>, K. A. S&oslash;rensen, J. V. Sundgaard, P. Nabilou, M. J. Emerson, P. H. Larsen, L. L. Gluud, T. L. Andersen, A. B. Dahl.
+        <a href="https://link.springer.com/chapter/10.1007/978-3-031-73290-4_22" target="_blank" rel="noreferrer">Identifying Nonalcoholic Fatty Liver Disease and Advanced Liver Fibrosis from MRI in UK Biobank</a>.
+        <em>MLMI, MICCAI 2024 Workshops</em>, LNCS 15242:222&ndash;231, Springer, 2024 (oral).</li>
+      <li><strong>R. Al-Belmpeisi</strong>, V. Tuhtan, M. B. Christensen, R. Kuruwita, T. Haugb&oslash;lle.
+        <a href="https://academic.oup.com/mnras/article/534/4/3194/7774401" target="_blank" rel="noreferrer">Simulated analogues II: a new methodology for non-parametric matching of models to observations</a>.
+        <em>MNRAS</em> 534(4):3194&ndash;3210, 2024.</li>
+      <li>V. Tuhtan, <strong>R. Al-Belmpeisi</strong>, M. B. Christensen, R. Kuruwita, T. Haugb&oslash;lle.
+        <a href="https://academic.oup.com/mnras/article/534/4/3176/7783277" target="_blank" rel="noreferrer">Simulated analogues I: apparent and physical evolution of young binary protostellar systems</a>.
+        <em>MNRAS</em> 534(4):3176&ndash;3193, 2024.</li>
+    </ol>
+    <p class="sub">Preprint</p>
+    <ol class="pubs" start="6">
+      <li>A. I. Yfantis, <strong>R. Al-Belmpeisi</strong>.
+        <a href="https://arxiv.org/abs/2608.18208" target="_blank" rel="noreferrer">A deep learning algorithm for black hole spin estimation using hot-spot secondary images</a>.
+        <em>arXiv:2608.18208</em>, 2026.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Teaching &amp; Computing</h2>
+    <ul class="cv">
+      <li><span>Super-TA, 02002/02003 Computer Programming (Python), DTU Compute, DK</span></li>
+      <li><span>Python (PyTorch, distributed training), C++, CUDA, MPI; RAMSES, PLUTO, RADMC-3D</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="mono">
+  <div class="links">
+    <a href="https://www.linkedin.com/in/rami-albelbeisi-/" target="_blank" rel="noreferrer">LinkedIn</a>
+    <a href="https://github.com/RamiAlBel" target="_blank" rel="noreferrer">GitHub</a>
+    <a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" target="_blank" rel="noreferrer">Scholar</a>
+    <a href="https://orbit.dtu.dk/en/persons/rami-al-belmpeisi-2/" target="_blank" rel="noreferrer">DTU Orbit</a>
+  </div>
+  <span class="copy">&copy; 2026 Rami Al&#8209;Belmpeisi</span>
+</footer>
+
+</body>
+</html>

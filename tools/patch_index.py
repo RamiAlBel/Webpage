@@ -340,7 +340,9 @@ LINES = [
     ("Outside research", "I play music with "
      + a("https://simulatedanalogues.com/", "Simulated Analogues")
      + " in Copenhagen; more on the " + a("./hobbies.html", "hobbies page") + "."),
-    ("CV", '<a href="./cv.pdf" download="" data-cursor="PDF">Download (PDF)</a>'),
+    ("CV", "Positions, education, awards and publications are on the "
+     + a("./vitae.html", "vitae page") + ", with a "
+     + '<a href="./cv.pdf" download="Rami_Al-Belmpeisi_CV.pdf" data-cursor="PDF">PDF download</a>.'),
 ]
 
 PAGE_PAD = "max(clamp(20px,4vw,64px),calc((100% - 1100px) / 2))"
@@ -473,6 +475,10 @@ def restructure(template):
         "style=\"font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;"
         'text-transform:uppercase;color:#0c0c0d">Google Scholar &#8599;</a>',
         template, count=1)
+
+    # header CV button opens the vitae page instead of downloading the PDF
+    template = re.sub(r'<a href="\./cv\.pdf" download="" data-cursor="PDF" (style="[^"]*")>CV ↓</a>',
+                      r'<a href="./vitae.html" data-cursor="Open" \1>CV</a>', template, count=1)
 
     # phones: nav links don't fit (brand + CV stay)
     template = re.sub(r'<style>/\* site-mobile \*/.*?</style>\n  ', '', template,
