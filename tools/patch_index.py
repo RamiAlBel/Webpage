@@ -275,6 +275,157 @@ def research_html():
     )
 
 
+# ---------------------------------------------------------------------------
+# Slimmer homepage: hero -> About -> Research -> Contact.
+# Articles and music live on their own pages (articles.html, hobbies.html) and
+# are reached from the nav; the full publication list duplicated the research
+# rows, and the statement band is gone.
+# ---------------------------------------------------------------------------
+
+MONO_LABEL = ("font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;"
+              "text-transform:uppercase")
+
+NAV_LINKS = [
+    ("About", "#about", "Go"),
+    ("Research", "#research", "Go"),
+    ("Articles", "./articles.html", "Open"),
+    ("Hobbies", "./hobbies.html", "Open"),
+    ("Contact", "#contact", "Go"),
+]
+
+ABOUT_FACTS = [
+    ("Now", "PhD, DTU Compute"),
+    ("MSc", "Niels Bohr Institute, Copenhagen"),
+    ("BSc", "Aristotle University of Thessaloniki"),
+    ("Based", "Copenhagen, Denmark"),
+]
+
+ABOUT_PARAGRAPHS = [
+    "I&#8217;m a PhD researcher at DTU Compute, in the Section for Visual "
+    "Computing, where I develop deep learning methods for medical imaging "
+    "&#8212; mainly diagnosing and staging liver disease from MRI in the UK "
+    "Biobank. The project is funded by Novo Nordisk through the Novo STAR "
+    "programme. My thesis is submitted, and the defence is in December 2026.",
+
+    "I came to machine learning from physics. I studied physics at the "
+    "Aristotle University of Thessaloniki, with an Erasmus exchange in "
+    "T&#252;bingen working on the photoevaporation of planetary atmospheres, "
+    "and did my MSc at the Niels Bohr Institute, applying deep learning to "
+    "simulations of star formation and to matching them against real "
+    "observations.",
+
+    "I still work across both fields: estimating the spin of the black hole at "
+    "the centre of our galaxy from hot-spot images, with collaborators at "
+    "IAA-CSIC in Granada, and making learned shape representations "
+    "explainable. Outside research I play music in Copenhagen with Simulated "
+    "Analogues &#8212; more on the <a href=\"./hobbies.html\" data-cursor=\"Open\" "
+    "style=\"color:#f1efe9;border-bottom:1px solid #ff4e1a\">hobbies page</a>.",
+]
+
+ABOUT_CSS = """<style>
+.ab-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:64px;
+  align-items:start;padding-top:44px}
+.ab-h2{margin:0 0 40px;font-stretch:125%;font-weight:600;font-size:clamp(36px,5vw,84px);
+  line-height:.92;letter-spacing:-.03em;text-transform:uppercase}
+.ab-facts{margin:0;display:grid;grid-template-columns:auto 1fr;gap:12px 20px}
+.ab-facts dt{font:400 12px/1.6 'JetBrains Mono',monospace;letter-spacing:.14em;
+  text-transform:uppercase;color:#8d8b85}
+.ab-facts dd{margin:0;font-size:15px;line-height:1.5;color:#d9d6cf}
+.ab-text{display:flex;flex-direction:column;gap:22px;max-width:64ch}
+.ab-text p{margin:0;font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:#d9d6cf;
+  text-wrap:pretty}
+.ab-text p:first-child{color:#f1efe9}
+@media (max-width:860px){.ab-grid{grid-template-columns:1fr;gap:40px}}
+</style>"""
+
+
+def about_section():
+    facts = "".join("<dt>" + k + "</dt><dd>" + v + "</dd>" for k, v in ABOUT_FACTS)
+    paras = "".join("<p>" + t + "</p>" for t in ABOUT_PARAGRAPHS)
+    return (
+        '\n  <!-- ABOUT (dark) -->\n'
+        '  <section id="about" data-screen-label="About" style="background:#0c0c0d;'
+        'color:#f1efe9;padding:120px clamp(20px,4vw,64px)">\n'
+        '    <div data-reveal="" style="display:flex;justify-content:space-between;'
+        'align-items:baseline;border-bottom:1px solid rgba(241,239,233,.2);'
+        'padding-bottom:18px">'
+        '<span style="' + MONO_LABEL + ';color:#8d8b85">01 &#8212; About</span>'
+        '<a href="./cv.pdf" download="" data-cursor="PDF" style="' + MONO_LABEL
+        + ';color:#f1efe9">CV &#8595;</a></div>'
+        + ABOUT_CSS
+        + '<div class="ab-grid"><div data-reveal=""><h2 class="ab-h2">About</h2>'
+        '<dl class="ab-facts">' + facts + '</dl></div>'
+        '<div class="ab-text" data-reveal="">' + paras + '</div></div>\n'
+        '  </section>\n'
+    )
+
+
+def _drop_section(template, comment, attr):
+    return re.sub(
+        r'\s*<!-- ' + re.escape(comment) + r' -->\s*<section ' + re.escape(attr)
+        + r'.*?</section>', '', template, count=1, flags=re.S)
+
+
+def restructure(template):
+    # smaller name, on one line
+    template = template.replace(
+        "font-size:clamp(48px,9vw,190px);line-height:.86",
+        "font-size:clamp(40px,5.4vw,96px);line-height:.95", 1)
+    template = re.sub(r'>Rami<br>(Al.Belmpeisi</h1>)', r'>Rami \1', template, count=1)
+
+    # no "Scroll" hint, colour portrait
+    template = template.replace("<span>Scroll ↓</span>", "", 1)
+    template = template.replace(";filter:grayscale(1) contrast(1.1)", "")
+
+    # fewer sections
+    template = _drop_section(template, "TEXTURE BAND (dark)", 'data-screen-label="Statement"')
+    template = _drop_section(template, "PUBLICATIONS (light)", 'id="publications"')
+    template = _drop_section(template, "MOVIES (dark)", 'id="movies"')
+    template = _drop_section(template, "MUSIC (light)", 'id="music"')
+
+    if 'id="about"' not in template:
+        anchor = "\n  <!-- RESEARCH (light) -->"
+        if anchor not in template:
+            raise SystemExit("research section anchor not found - did the design change?")
+        template = template.replace(anchor, about_section() + anchor, 1)
+
+    # section numbering and the research header link
+    template = re.sub(r'0\d (?:—|&#8212;) Research', '02 &#8212; Research', template, count=1)
+    template = re.sub(r'0\d (?:—|&#8212;) Contact', '03 &#8212; Contact', template, count=1)
+    template = re.sub(
+        r'<span style="[^"]*">(?:Four|Three) threads</span>',
+        '<a href="https://scholar.google.com/citations?user=gXBdz6wAAAAJ&amp;hl=el&amp;oi=ao" '
+        'target="_blank" rel="noreferrer" data-cursor="Open" style="' + MONO_LABEL
+        + ';color:#0c0c0d">Google Scholar &#8599;</a>', template, count=1)
+
+    # nav
+    link = ('<a href="{href}" data-cursor="{cur}" style="font:500 12px/1 '
+            "'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;"
+            'color:#fff">{label}</a>')
+    # contact email was as oversized as the name
+    template = template.replace(
+        "font-size:clamp(34px,7vw,128px);line-height:.9",
+        "font-size:clamp(28px,4.6vw,80px);line-height:.95", 1)
+
+    # phones: nav links don't fit (brand + CV stay), hero meta row too cramped
+    template = template.replace(
+        '<div style="position:relative;display:grid;grid-template-columns:120px 1fr 1fr;',
+        '<div class="hero-meta" style="position:relative;display:grid;'
+        'grid-template-columns:120px 1fr 1fr;', 1)
+    if "/* site-mobile */" not in template:
+        template = template.replace(
+            "<!-- NAV -->",
+            "<style>/* site-mobile */@media (max-width:760px){.site-nav{display:none!important}"
+            ".hero-meta{grid-template-columns:120px 1fr!important;gap:20px!important}"
+            ".hero-meta>div:last-child{display:none!important}}</style>\n  <!-- NAV -->", 1)
+
+    nav = ('<nav class="site-nav" style="display:flex;gap:26px">\n'
+           + "\n".join("      " + link.format(href=h, cur=c, label=l) for l, h, c in NAV_LINKS)
+           + "\n    </nav>")
+    template = re.sub(r'<nav\b[^>]*>.*?</nav>', lambda m: nav,
+                      template, count=1, flags=re.S)
+    return template
+
 
 def main():
     b = bundle.load(INDEX)
@@ -302,7 +453,7 @@ def main():
       style = re.search(r'style="([^"]*)"', old)
       style = style.group(1) if style else "width:120px;height:150px;object-fit:cover"
       layer = ("position:absolute;inset:0;width:100%;height:100%;"
-               "object-fit:cover;filter:grayscale(1) contrast(1.1)")
+               "object-fit:cover")
       new = (
           '<div class="site-morph" data-reveal="" style="position:relative;'
           + style.replace("object-fit:cover", "").replace("filter:grayscale(1) contrast(1.1)", "")
@@ -379,6 +530,9 @@ def main():
                 'pointer-events:none;background:rgba(12,12,13,.45)"></div>'
             )
             template = template.replace(band.group(0), band.group(0) + layer, 1)
+
+    # --- slimmer layout: About -> Research -> Contact ---
+    template = restructure(template)
 
     # --- inject the effects script ---
     script = "<script>" + MARKER + EFFECTS_JS + "</script>"
